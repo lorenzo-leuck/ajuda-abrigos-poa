@@ -1,0 +1,218 @@
+
+2024-05-11T16:49:44.962677
+================================ System Message ================================
+
+You will get information about a codebase that is currently on disk in the current folder.
+The user will ask you to write a script that runs the code in a specific way.
+You will answer with code blocks that include all the necessary terminal commands.
+Do not install globally. Do not use sudo.
+Do not explain the code, just give the commands.
+Do not use placeholders, use example values (like . for a folder argument) if necessary.
+
+
+================================ Human Message =================================
+
+
+        Make a unix script that
+        a) installs dependencies
+        b) runs all necessary parts of the codebase (in parallel if necessary)
+        
+Information about the codebase:
+
+```
+File: root/package.json
+1 {
+2   "name": "shelter-donation-app",
+3   "version": "1.0.0",
+4   "scripts": {
+5     "start": "concurrently \"cd backend && npm start\" \"cd frontend && npm start\""
+6   },
+7   "devDependencies": {
+8     "concurrently": "^7.0.0"
+9   }
+10 }
+
+File: backend/package.json
+1 {
+2   "name": "backend",
+3   "version": "1.0.0",
+4   "main": "server.js",
+5   "scripts": {
+6     "start": "node server.js"
+7   },
+8   "dependencies": {
+9     "express": "^4.17.1",
+10     "mongoose": "^6.0.12",
+11     "bcryptjs": "^2.4.3",
+12     "jsonwebtoken": "^8.5.1",
+13     "dotenv": "^10.0.0"
+14   }
+15 }
+
+File: backend/server.js
+1 const express = require('express');
+2 const mongoose = require('mongoose');
+3 const bodyParser = require('body-parser');
+4 const config = require('./config');
+5 const apiRoutes = require('./api');
+6 
+7 const app = express();
+8 app.use(bodyParser.json());
+9 
+10 mongoose.connect(config.dbUri, { useNewUrlParser: true, useUnifiedTopology: true })
+11   .then(() => console.log('MongoDB connected'))
+12   .catch(err => console.log(err));
+13 
+14 app.use('/api', apiRoutes);
+15 
+16 const PORT = process.env.PORT || 3000;
+17 app.listen(PORT, () => {
+18   console.log(`Server running on port ${PORT}`);
+19 });
+
+File: backend/config.js
+1 require('dotenv').config();
+2 
+3 module.exports = {
+4   dbUri: process.env.MONGODB_URI || 'mongodb://localhost:27017/shelterDonations',
+5   jwtSecret: process.env.JWT_SECRET || 'your_secret_key'
+6 };
+
+File: backend/auth.js
+1 const jwt = require('jsonwebtoken');
+2 const config = require('./config');
+3 
+4 exports.authenticateToken = (req, res, next) => {
+5   const authHeader = req.headers['authorization'];
+6   const token = authHeader && authHeader.split(' ')[1];
+7 
+8   if (token == null) return res.sendStatus(401);
+9 
+10   jwt.verify(token, config.jwtSecret, (err, user) => {
+11     if (err) return res.sendStatus(403);
+12     req.user = user;
+13     next();
+14   });
+15 };
+
+File: backend/api.js
+1 const express = require('express');
+2 const router = express.Router();
+3 const DonationItem = require('./models').DonationItem;
+4 
+5 router.get('/items', async (req, res) => {
+6   try {
+7     const items = await DonationItem.find();
+8     res.json(items);
+9   } catch (err) {
+10     res.status(500).json({ message: err.message });
+11   }
+12 });
+13 
+14 router.post('/items', async (req, res) => {
+15   const item = new DonationItem({
+16     name: req.body.name,
+17     category: req.body.category,
+18     shelter: req.body.shelter
+19   });
+20   try {
+21     const newItem = await item.save();
+22     res.status(201).json(newItem);
+23   } catch (err) {
+24     res.status(400).json({ message: err.message });
+25   }
+26 });
+27 
+28 module.exports = router;
+
+File: backend/models.js
+1 const mongoose = require('mongoose');
+2 
+3 const donationItemSchema = new mongoose.Schema({
+4   name: String,
+5   category: String,
+6   shelter: String,
+7   lastEdited: { type: Date, default: Date.now }
+8 });
+9 
+10 const DonationItem = mongoose.model('DonationItem', donationItemSchema);
+11 
+12 module.exports = {
+13   DonationItem
+14 };
+
+File: frontend/package.json
+1 {
+2   "name": "frontend",
+3   "version": "1.0.0",
+4   "scripts": {
+5     "start": "vite",
+6     "build": "vite build"
+7   },
+8   "dependencies": {
+9     "react": "^17.0.2",
+10     "react-dom": "^17.0.2",
+11     "axios": "^0.21.1",
+12     "tailwindcss": "^2.2.7"
+13   },
+14   "devDependencies": {
+15     "vite": "^2.3.7"
+16   }
+17 }
+
+File: frontend/vite.config.js
+1 import { defineConfig } from 'vite';
+2 import reactRefresh from '@vitejs/plugin-react-refresh';
+3 
+4 export default defineConfig({
+5   plugins: [reactRefresh()]
+6 });
+
+File: frontend/src/main.jsx
+1 import React from 'react';
+2 import ReactDOM from 'react-dom';
+3 import App from './App';
+4 import './index.css';
+5 
+6 ReactDOM.render(
+7   <React.StrictMode>
+8     <App />
+9   </React.StrictMode>,
+10   document.getElementById('root')
+11 );
+
+File: frontend/src/App.jsx
+1 import React from 'react';
+2 
+3 function App() {
+4   return (
+5     <div className="App">
+6       <h1>Welcome to the Shelter Donation Manager</h1>
+7     </div>
+8   );
+9 }
+10 
+11 export default App;
+
+File: frontend/src/index.css
+1 @tailwind base;
+2 @tailwind components;
+3 @tailwind utilities;
+
+```
+
+================================== Ai Message ==================================
+
+```bash
+# Install root dependencies
+npm install --prefix .
+
+# Install backend dependencies
+npm install --prefix backend
+
+# Install frontend dependencies
+npm install --prefix frontend
+
+# Run the application (backend and frontend concurrently)
+npm start --prefix .
+```

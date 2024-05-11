@@ -1,0 +1,13 @@
+{
+    "name": "ajuda-abrigos-poa",
+    "version": "1.0.0",
+    "scripts": {
+      "dev:backend": "cd backend && npm run start",
+      "dev:frontend": "cd frontend && npm run dev",
+      "start": "concurrently --names \"backend,frontend\" -c \"green.bold,cyan.bold\" \"npm run dev:backend\" \"npm run dev:frontend\""
+    },
+    "dependencies": {
+      "concurrently": "^7.6.0"
+    }
+  }
+  

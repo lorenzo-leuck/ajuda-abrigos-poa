@@ -1,0 +1,10 @@
+{
+  "name": "shelter-donation-app",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "concurrently \"cd backend && npm start\" \"cd frontend && npm start\""
+  },
+  "devDependencies": {
+    "concurrently": "^7.0.0"
+  }
+}

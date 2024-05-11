@@ -1,0 +1,11 @@
+mobile-first website to help organize shelter donations. the app stack is node and express with mongodb on backend. react with tailwind using vite on the frontend. no typescript in either parts.
+
+the frontend and the backend must be in different folders and npm projects. on the root level should be another package json with a command to start both.
+
+
+authentication is required for admin usage. on the signup the admin needs to set username, password and selected shelter name from predefined list. once signed in, he can select what items are required on 3 categories: Comida/Bebida, Higiene e Agasalho. 
+
+the non signed in users will se the list the admin list. the list will always have a label "last edited in: "
+
+both cases will access the app on a route made for its shelter like
+baseUrl/shelterName
