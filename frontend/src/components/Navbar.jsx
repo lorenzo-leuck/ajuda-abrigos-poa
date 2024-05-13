@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { AppBar, Toolbar, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
@@ -34,10 +34,10 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar style={{ position: 'fixed', top: 0, left: 0 }} color="secondary">
-      <Container maxWidth="xl">
+    <AppBar color="secondary">
+      <Container>
         <Toolbar disableGutters>
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -74,7 +74,7 @@ const Navbar = () => {
             </Menu>
           </Box>
 
-          <Typography variant="h7" sx={{ flexGrow: 20, textAlign: 'center', fontFamily: 'Roboto'}}>
+          <Typography variant="h6" sx={{ flexGrow: 20, textAlign: 'center', fontFamily: 'Roboto'}}>
             Abrigo centro vida
           </Typography>
 

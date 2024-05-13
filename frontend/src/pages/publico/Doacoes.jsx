@@ -1,15 +1,22 @@
-import { useState } from "react";
+import { Typography } from "@mui/material";
 import Navbar from "../../components/Navbar";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
 
-
-function Doacoes() {
+const Doacoes = () => {
+  const styles = {
+    fontSize: "10px",
+    textAlign: "center",
+  };
 
   return (
-    <div>
-      <Navbar />
-      Doacoes!!!!!!
-    </div>
+    <Box display="flex" flexDirection="column">
+      <Typography variant="h5">
+        <div>Doacoes!!!!!!</div>
+
+      </Typography>
+    </Box>
   );
-}
+};
 
 export default Doacoes;
