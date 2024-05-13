@@ -74,7 +74,7 @@ const Navbar = () => {
             </Menu>
           </Box>
 
-          <Typography variant="h5" sx={{ flexGrow: 10, textAlign: 'center', fontFamily: 'Roboto', fontWeight: 'bold' }}>
+          <Typography variant="h7" sx={{ flexGrow: 20, textAlign: 'center', fontFamily: 'Roboto'}}>
             Abrigo centro vida
           </Typography>
 
