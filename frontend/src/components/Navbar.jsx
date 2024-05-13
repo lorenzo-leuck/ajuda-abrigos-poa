@@ -9,16 +9,22 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
+import Switch from '@mui/material/Switch';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import LoginIcon from '@mui/icons-material/Login';
 
 const pages = ['Doações', 'Voluntários'];
-const pageRoutes = ['/donations', '/volunteers'];
+const pageRoutes = ['/doacoes', '/voluntarios'];
 
 const settings = ['Editar', 'Contatos', 'Sair'];
-const settingsRoutes = ['/edit', '/contacts', '/logout'];
+const settingsRoutes = ['/editar', '/contatos', '/login'];
 
 const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const [auth, setAuth] = React.useState(true);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -36,11 +42,38 @@ const Navbar = () => {
     setAnchorElUser(null);
   };
 
+  const handleChange = (event) => {
+    console.log(event.target.checked);
+    setAuth(event.target.checked);
+  };
+
+
+
   return (
     <AppBar color="secondary">
       <Container>
         <Toolbar disableGutters>
           <Box>
+            
+            
+          <FormGroup>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={auth}
+              onChange={handleChange}
+              aria-label="login switch"
+            />
+          }
+          label={auth ? 'Logout' : 'Login'}
+        />
+    </FormGroup>
+
+
+
+
+
+
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -81,35 +114,46 @@ const Navbar = () => {
             Abrigo centro vida
           </Typography>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip>
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting, index) => (
-                <MenuItem key={setting} component={Link} to={settingsRoutes[index]} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+
+          {auth ? (
+  <Box sx={{ flexGrow: 0 }}>
+    <Tooltip>
+      <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }} color="inherit" size="large">
+        <AccountCircle />
+      </IconButton>
+    </Tooltip>
+    <Menu
+      sx={{ mt: '45px' }}
+      id="menu-appbar"
+      anchorEl={anchorElUser}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      keepMounted
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      open={Boolean(anchorElUser)}
+      onClose={handleCloseUserMenu}
+    >
+      {settings.map((setting, index) => (
+        <MenuItem key={setting} component={Link} to={settingsRoutes[index]} onClick={handleCloseUserMenu}>
+          <Typography textAlign="center">{setting}</Typography>
+        </MenuItem>
+      ))}
+    </Menu>
+  </Box>
+) : (
+  <IconButton onClick={()=>{window.location.href = '/login';;}} sx={{ p: 0 }} color="inherit" size="large">
+    <LoginIcon />
+  </IconButton>
+)}
+
+
+
+
         </Toolbar>
       </Container>
     </AppBar>

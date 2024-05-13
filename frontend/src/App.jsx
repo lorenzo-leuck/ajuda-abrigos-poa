@@ -4,8 +4,15 @@ import viteLogo from "/vite.svg";
 import Navbar from "./components/Navbar";
 import Doacoes from "./pages/publico/Doacoes";
 import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
 import Toolbar from '@mui/material/Toolbar';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Panorama from "./pages/publico/Panorama";
+import Voluntarios from "./pages/publico/Voluntarios";
+import Editar from "./pages/gestao/Editar";
+import Contatos from "./pages/gestao/Contatos";
+import LoginPage from "./pages/gestao/Login";
+
+
 const App = () => {
   const styles = `
     body {
@@ -26,9 +33,15 @@ const App = () => {
     <>
       <Navbar />
       <Toolbar />
-      <Box display="flex" flexDirection="column">
-        <Doacoes />
-      </Box>
+      <Routes>
+      <Route path="/" element={<Panorama />} />
+      {/* <Route path=":prefix/doacoes" element={<PlanDataProvider><PlanRoutes /></PlanDataProvider>} /> */}
+      <Route path="/doacoes" element={<Doacoes/>} />
+      <Route path="/voluntarios" element={<Voluntarios/>} />
+      <Route path="/editar" element={<Editar/>} />
+      <Route path="/contatos" element={<Contatos/>} />
+      <Route path="/login" element={<LoginPage/>} />
+      </Routes>
     </>
   );
 };
