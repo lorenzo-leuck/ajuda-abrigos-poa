@@ -26,7 +26,7 @@ const App = () => {
     <>
       <Navbar />
       <Toolbar />
-      <Box display="flex" flexDirection="column" spacing={2}>
+      <Box display="flex" flexDirection="column">
         <Doacoes />
       </Box>
     </>

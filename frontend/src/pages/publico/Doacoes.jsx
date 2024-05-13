@@ -10,9 +10,9 @@ const Doacoes = () => {
   };
 
   return (
-    <Box display="flex" flexDirection="column">
-      <Typography variant="h5">
-        <div>Doacoes!!!!!!</div>
+    <Box display="flex" flexDirection="column"  alignItems="center">
+      <Typography variant="h4" p={3} fontWeight={200}>
+        Doações
 
       </Typography>
     </Box>
