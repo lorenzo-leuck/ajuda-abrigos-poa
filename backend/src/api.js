@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const DonationItem = require('./models/doacoes').DonationItem;
 const mongoose = require('mongoose');
 const { Usuarios, Doacoes,Demandas, Voluntarios } = require('./model');
+const jwt = require('jsonwebtoken');
 
 router.get('/items', async (req, res) => {
   try {
@@ -29,6 +29,7 @@ router.post('/items', async (req, res) => {
 });
 
 
+
 router.post('/login', async (req, res) => {
   const login = req.body;
   const { username, password } = login;
@@ -37,18 +38,18 @@ router.post('/login', async (req, res) => {
     const userData = await Usuarios.findOne({ "username": username, "password": password });
 
     if (!userData) {
-      console.log('Invalid username or password');
       return res.status(401).json({ message: 'Invalid username or password' });
     }
 
-    console.log("Login successful:", userData);
-    res.status(200).json({ message: 'Login successful', userData });
+    const token = jwt.sign({ userId: userData._id }, 'Td?B75q0uOX');
+
+    console.log("Login successful:", token);
+    res.status(200).json({ message: 'Login successful', userData, token });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'An error occurred during login' });
   }
 });
-
 
 
 module.exports = router;

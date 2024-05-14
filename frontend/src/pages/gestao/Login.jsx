@@ -30,6 +30,7 @@ const LoginPage = () => {
       const data = await response.json();
       if (response.ok) {
         console.log('Login successful:', data);
+        localStorage.setItem('token', data.token);
         // Handle successful login, e.g. redirect to dashboard
       } else {
         console.error('Login failed:', data.message);
