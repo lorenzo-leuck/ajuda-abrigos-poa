@@ -8,7 +8,7 @@ const cors = require('cors');
 const dotenv = require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 const app = express();
-const PORT = 1339;
+const port = 1339;
 app.use(bodyParser.json());
 
 app.use(cors());
@@ -42,7 +42,6 @@ const connect = async () => {
 
 
 
-const port = PORT;
 
 app.listen(port, async () => {
   console.log('Server running on port 1339');
