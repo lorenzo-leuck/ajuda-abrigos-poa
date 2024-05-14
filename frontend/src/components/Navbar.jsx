@@ -19,7 +19,7 @@ const pages = ['Doações', 'Voluntários'];
 const pageRoutes = ['/doacoes', '/voluntarios'];
 
 const settings = ['Editar', 'Contatos', 'Sair'];
-const settingsRoutes = ['/editar', '/contatos', '/login'];
+const settingsRoutes = ['/editar', '/contatos', '/logout'];
 
 const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -56,7 +56,7 @@ const Navbar = () => {
           <Box>
             
             
-          <FormGroup>
+          {/* <FormGroup>
         <FormControlLabel
           control={
             <Switch
@@ -68,7 +68,7 @@ const Navbar = () => {
           label={auth ? 'Logout' : 'Login'}
         />
     </FormGroup>
-
+ */}
 
 
 

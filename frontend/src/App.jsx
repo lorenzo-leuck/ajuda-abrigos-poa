@@ -11,36 +11,28 @@ import Voluntarios from "./pages/publico/Voluntarios";
 import Editar from "./pages/gestao/Editar";
 import Contatos from "./pages/gestao/Contatos";
 import LoginPage from "./pages/gestao/Login";
-
+import PrivateRoute from './components/PrivateRoute'; // Make sure to create this component
 
 const App = () => {
-  const styles = `
-    body {
-      font-family: 'Times New Roman', Times, serif;
-      background-color: #fff;
-
-      .AppContent {
-        display: flex; 
-        flex-direction: column;
-        align-items: center;
-        gap: 50px
-      }
-
-    }
-  `;
-
   return (
     <>
       <Navbar />
       <Toolbar />
       <Routes>
-      <Route path="/" element={<Panorama />} />
-      {/* <Route path=":prefix/doacoes" element={<PlanDataProvider><PlanRoutes /></PlanDataProvider>} /> */}
-      <Route path="/doacoes" element={<Doacoes/>} />
-      <Route path="/voluntarios" element={<Voluntarios/>} />
-      <Route path="/editar" element={<Editar/>} />
-      <Route path="/contatos" element={<Contatos/>} />
-      <Route path="/login" element={<LoginPage/>} />
+        <Route path="/" element={<Panorama />} />
+        <Route path="/doacoes" element={<Doacoes />} />
+        <Route path="/voluntarios" element={<Voluntarios />} />
+        <Route path="/editar" element={
+          <PrivateRoute>
+            <Editar />
+          </PrivateRoute>
+        } />
+        <Route path="/contatos" element={
+          <PrivateRoute>
+            <Contatos />
+          </PrivateRoute>
+        } />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </>
   );
