@@ -20,12 +20,15 @@ router.get('/doacoes', async (req, res) => {
 
 
 
+
+
+
 router.patch('/doacao', async (req, res) => {
   try {
     const { doacao } = req.body
 
-    await Doacoes.create({"label": doacao, "categoria":"Etc"})
-console.log("updated doacoes");
+    await Doacoes.create({ "label": doacao, "categoria": "Etc" })
+    console.log("updated doacoes");
     res.status(200).json({ message: "updated doacoes" });
 
   } catch (err) {
@@ -39,7 +42,7 @@ router.get('/voluntarios', async (req, res) => {
   try {
     const voluntarios = await Voluntarios.find({}).lean();
 
-console.log(voluntarios);
+    console.log(voluntarios);
 
     const labelValues = voluntarios.map(voluntario => voluntario.area);
 
@@ -90,6 +93,40 @@ router.post('/login', async (req, res) => {
     res.status(500).json({ message: 'An error occurred during login' });
   }
 });
+
+
+router.get('/demandas/:tipo', async (req, res) => {
+  try {
+    const { tipo } = req.params
+    console.log(tipo);
+
+    const demandas = await Demandas.find({ "abrigo": "vida" }, { '_id': 0, [`${tipo}`]: 1 }).lean();
+
+    const demandasArray = demandas.map(demanda => demanda.tipo);
+    res.status(200).json({ message: demandasArray });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+router.patch('/demandas/:tipo', async (req, res) => {
+  try {
+    const { tipo } = req.params;
+    const { newArray } = req.body;
+
+    await Demandas.updateOne({ "abrigo": "vida" }, { $set: { [tipo]: newArray } });
+
+    res.status(200).json({ message: "Array updated successfully" });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
 
 
 module.exports = router;

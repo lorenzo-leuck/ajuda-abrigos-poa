@@ -20,13 +20,18 @@ const EditarDoacoes = () => {
   const handleAddDoacao = async () => {
     try {
       await axios.patch("http://localhost:1339/api/doacao", { doacao: newDoacao });
-      // Assuming the patch request is successful, you can update the local state
       setDemanda([...demanda, newDoacao]);
       setNewDoacao('');
     } catch (error) {
       console.log(error);
     }
   };
+
+const getDemandasDb = async ()=>{
+    const demandasDB = await axios.get("http://localhost:1339/api/demandas/doacoes")
+    console.log(demandasDB.data.message);
+} 
+
 
   const getData = async () => {
     try {
@@ -39,6 +44,7 @@ const EditarDoacoes = () => {
 
   useEffect(() => {
     getData();
+    getDemandasDb()
   }, []);
 
   return (
