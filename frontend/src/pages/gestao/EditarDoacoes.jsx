@@ -1,16 +1,34 @@
-import React from "react";
-import Typography from "@mui/material/Typography";
+import React, { useState, useEffect } from "react";
+import { Typography, Box } from "@mui/material";
+import axios from "axios";
 
 const EditarDoacoes = () => {
+  const [data, setData] = useState([]);
 
-    return (
+  const getData = async () => {
+    try {
+      const response = await axios.get("http://localhost:1339/api/doacoes");
+      setData(response.data.message);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  return (
+    <Box>
       <Typography variant="body1" textAlign="center">
-        Pagina para DoaçõesX
       </Typography>
-    );
-
-
-
+      {data.map((item, index) => (
+        <div key={index}>
+          <Typography>{item}</Typography>
+        </div>
+      ))}
+    </Box>
+  );
 };
 
 export default EditarDoacoes;

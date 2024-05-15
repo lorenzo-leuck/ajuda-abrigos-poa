@@ -1,17 +1,41 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const { Usuarios, Doacoes,Demandas, Voluntarios } = require('./model');
+const { Usuarios, Doacoes, Demandas, Voluntarios } = require('./model');
 const jwt = require('jsonwebtoken');
 
 router.get('/doacoes', async (req, res) => {
   try {
-    const doacoes = await Doacoes.find({}, {'_id':0, 'label': 1}).lean();
-    return doacoes
+    const doacoes = await Doacoes.find({}, { '_id': 0, 'label': 1 }).lean();
+
+    const labelValues = doacoes.map(doacao => doacao.label);
+
+    res.status(200).json({ message: labelValues });
+
   } catch (err) {
+    console.log(err);
     res.status(500).json({ message: err.message });
   }
 });
+
+router.get('/voluntarios', async (req, res) => {
+  try {
+    const voluntarios = await Voluntarios.find({}).lean();
+
+console.log(voluntarios);
+
+    const labelValues = voluntarios.map(voluntario => voluntario.area);
+
+
+    res.status(200).json({ message: labelValues });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
 
 router.post('/items', async (req, res) => {
   const item = new DonationItem({

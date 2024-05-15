@@ -39,7 +39,7 @@ const VoluntariosSchema = new mongoose.Schema({
   area: String
 });
 
-const Voluntarios = mongoose.model('voluntarios', DemandasSchema);
+const Voluntarios = mongoose.model('areaVoluntarios', VoluntariosSchema, 'areaVoluntarios');
 
 module.exports = {
     Usuarios, Doacoes,Demandas, Voluntarios
