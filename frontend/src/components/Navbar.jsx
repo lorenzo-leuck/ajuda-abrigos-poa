@@ -12,8 +12,8 @@ const token = localStorage.getItem('token');
 const pages = ['Doações', 'Voluntários'];
 const pageRoutes = ['/doacoes', '/voluntarios'];
 
-const settings = ['Editar', 'Contatos', 'Sair'];
-const settingsRoutes = ['/editar', '/contatos', '/login'];
+const settings = ['Editar', 'Sair'];
+const settingsRoutes = ['/editar', '/login'];
 
 const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);

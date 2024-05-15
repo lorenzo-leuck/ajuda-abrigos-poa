@@ -50,6 +50,10 @@ const EditarDoacoes = () => {
       });
       setNewDoacao("");
       // setDemanda((currentDemanda) => [...currentDemanda, newDoacao]);
+      updateDemandasDb(newDoacao)
+      getDemandasDb();
+
+
     } catch (error) {
       console.error(error);
     }

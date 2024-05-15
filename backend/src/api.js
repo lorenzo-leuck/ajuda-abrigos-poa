@@ -38,6 +38,23 @@ router.patch('/doacao', async (req, res) => {
 });
 
 
+
+router.patch('/voluntario', async (req, res) => {
+  try {
+    const { area } = req.body
+
+    await Voluntarios.create({ "area": area })
+  
+    res.status(200).json({ message: "updated voluntarios" });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+
 router.get('/voluntarios', async (req, res) => {
   try {
     const voluntarios = await Voluntarios.find({}).lean();
@@ -215,5 +232,61 @@ router.patch('/demandas/doacoes/remove', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
+
+
+router.patch('/demandas/voluntarios', async (req, res) => {
+  try {
+    const { demandas } = req.body;
+    const currentDate = new Date(); 
+    console.log(currentDate);
+    const updatedDemandas = await Demandas.findOneAndUpdate(
+      { "abrigo": "vida" },
+      {
+        $push: { "voluntarios": demandas }, 
+        $set: { "date": currentDate } 
+      },
+      { new: true } 
+    );
+
+    if (!updatedDemandas) {
+      return res.status(404).json({ message: "No matching document found to update." });
+    }
+
+    res.status(200).json({ voluntarios: updatedDemandas.voluntarios, updatedDate: updatedDemandas.date });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+router.patch('/demandas/voluntarios/remove', async (req, res) => {
+  try {
+    const { item } = req.body;  
+    const currentDate = new Date(); 
+    const updatedDemandas = await Demandas.findOneAndUpdate(
+      { "abrigo": "vida" }, 
+      {
+        $pull: { "voluntarios": item }, 
+        $set: { "date": currentDate } 
+      },
+      { new: true } 
+    );
+
+    if (!updatedDemandas) {
+      return res.status(404).json({ message: "No matching document found to update." });
+    }
+
+    res.status(200).json({ voluntarios: updatedDemandas.voluntarios, updatedDate: updatedDemandas.date });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+
 
 module.exports = router;
