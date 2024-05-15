@@ -7,12 +7,9 @@ const EditarDoacoes = () => {
   const [demanda, setDemanda] = useState([]);
   const [selectedValue, setSelectedValue] = useState("");
 
-  const addToDemanda = () => {
-    setDemanda([...demanda, selectedValue]);
-  };
-
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
+    setDemanda([...demanda, event.target.value]);
   };
 
   const getData = async () => {
@@ -45,9 +42,6 @@ const EditarDoacoes = () => {
           </MenuItem>
         ))}
       </Select>
-      <button onClick={addToDemanda} disabled={!selectedValue}>
-        Add to Demanda
-      </button>
 
       <div>
         {demanda.map((item, index) => (
