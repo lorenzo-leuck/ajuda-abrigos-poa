@@ -102,7 +102,6 @@ router.get('/demandas/doacoes', async (req, res) => {
     ).lean();
 
     const demandasArray = demandas ? demandas.doacoes : [];
-    console.log(demandasArray);
 
     res.status(200).send(demandasArray);
   } catch (err) {
@@ -135,8 +134,6 @@ router.patch('/demandas/doacoes', async (req, res) => {
     const updatedDemandas = await Demandas.findOneAndUpdate({ "abrigo": "vida" }, { $push: { "doacoes": demandas } }, { new: true });
 
 
-console.log(updatedDemandas.doacoes );
-
     res.status(200).json({ doacoes: updatedDemandas.doacoes });
 
   } catch (err) {
@@ -149,11 +146,13 @@ console.log(updatedDemandas.doacoes );
 
 router.patch('/demandas/doacoes/remove', async (req, res) => {
   try {
-    const { demandaToRemove } = req.body;  // for example, { item: 'item name' }
+    const { item } = req.body;  // for example, { item: 'item name' }
+
+
 
     const updatedDemandas = await Demandas.findOneAndUpdate(
       { "abrigo": "vida" },
-      { $pull: { "doacoes": demandaToRemove } },
+      { $pull: { "doacoes": item } },
       { new: true }
     );
 
@@ -161,7 +160,9 @@ router.patch('/demandas/doacoes/remove', async (req, res) => {
       return res.status(404).json({ message: "No matching document found to update." });
     }
 
-    console.log(updatedDemandas.doacoes);
+console.log("remove update",item, updatedDemandas.doacoes);
+
+
     res.status(200).json({ doacoes: updatedDemandas.doacoes });
 
   } catch (err) {

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Box, TextField, IconButton } from "@mui/material";
+import { Box, TextField, IconButton, Button } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import axios from "axios";
 import SendIcon from "@mui/icons-material/Send";
+import CloseIcon from "@mui/icons-material/Close";
 
 const EditarDoacoes = () => {
   const [doacoes, setDoacoes] = useState([]);
@@ -10,14 +11,26 @@ const EditarDoacoes = () => {
   const [selectedValue, setSelectedValue] = useState(null);
   const [newDoacao, setNewDoacao] = useState("");
 
+  const handleRemoveItem = async (item) => {
+    console.log(item);
+    try {
+      await axios.patch("http://localhost:1339/api/demandas/doacoes/remove", {
+        item: item,
+      });
+
+      await getDemandasDb();
+
+    } catch (error) {
+      console.error("Failed to remove item:", error);
+    }
+  };
+
   const updateDemandasDb = async (demanda) => {
     try {
       await axios.patch("http://localhost:1339/api/demandas/doacoes", {
         demandas: demanda,
       });
-
       await getDemandasDb();
-
     } catch (error) {
       console.error("Failed to update demandas in DB:", error);
     }
@@ -38,7 +51,7 @@ const EditarDoacoes = () => {
       setNewDoacao("");
       setDemanda((currentDemanda) => [...currentDemanda, newDoacao]);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -47,9 +60,9 @@ const EditarDoacoes = () => {
       const { data } = await axios.get(
         "http://localhost:1339/api/demandas/doacoes"
       );
-      setDemanda(data); // Assuming 'data.message' is an array of demandas
+      setDemanda(data); // Assuming 'data' is an array of demandas
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -58,13 +71,13 @@ const EditarDoacoes = () => {
       const { data } = await axios.get("http://localhost:1339/api/doacoes");
       setDoacoes(data.message); // Assuming 'data.message' is an array of doacoes
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   useEffect(() => {
     getDoacoes();
-    getDemandasDb(); // Ensure this is called so demanda is set initially
+    getDemandasDb();
   }, []);
 
   return (
@@ -94,9 +107,13 @@ const EditarDoacoes = () => {
 
       <Box p={3}>
         {demanda.map((item, index) => (
-          <div style={{ fontFamily: "Roboto", margin: 5 }} key={index}>
-            {item}
-          </div>
+          <Box key={index} display="flex" alignItems="center">
+            <IconButton onClick={() => handleRemoveItem(item)} color="error">
+              <CloseIcon />
+            </IconButton>
+
+            <div style={{ fontFamily: "Roboto", margin: 5 }}>{item}</div>
+          </Box>
         ))}
       </Box>
     </Box>
