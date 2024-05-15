@@ -69,7 +69,7 @@ const EditarDoacoes = () => {
   const getDoacoes = async () => {
     try {
       const { data } = await axios.get("http://localhost:1339/api/doacoes");
-      setDoacoes(data.message); // Assuming 'data.message' is an array of doacoes
+      setDoacoes(data.message); 
     } catch (error) {
       console.error(error);
     }
@@ -99,7 +99,7 @@ const EditarDoacoes = () => {
         renderInput={(params) => (
           <TextField
             {...params}
-            label="Selectione Doação"
+            label="Selecione Doação"
             sx={{ width: 300 }}
           />
         )}
