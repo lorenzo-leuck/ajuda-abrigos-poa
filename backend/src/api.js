@@ -95,21 +95,25 @@ router.post('/login', async (req, res) => {
 
 router.get('/demandas/:tipo', async (req, res) => {
   try {
-      const { tipo } = req.params;
-      
+    const { tipo } = req.params;
 
-      const demandas = await Demandas.find({ "abrigo": "vida"}, { '_id': 0, [`${tipo}`]: 1 }).lean();
+    const demandas = await Demandas.findOne(
+      { "abrigo": "vida" },
+      { _id: 0, [tipo]: { $ifNull: [[], `$${tipo}`] } }
+    ).lean();
 
-      const demandasArray = demandas.map(demanda => demanda[tipo][0]);
-      console.log(demandasArray);
+    const demandasArray = demandas ? demandas[tipo] : [];
+    console.log(demandasArray);
 
-      res.status(200).json({ message: demandasArray });
-
+    res.status(200).json({ message: demandasArray });
   } catch (err) {
-      console.log(err);
-      res.status(500).json({ message: err.message });
+    console.log(err);
+    res.status(500).json({ message: err.message });
   }
 });
+
+
+
 
 
 router.patch('/demandas/:tipo', async (req, res) => {

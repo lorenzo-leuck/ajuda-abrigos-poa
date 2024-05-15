@@ -5,14 +5,14 @@ import axios from "axios";
 import SendIcon from "@mui/icons-material/Send";
 
 const EditarDoacoes = () => {
-  const [data, setData] = useState([]);
+  const [doacoes, setDoacoes] = useState([]);
   const [demanda, setDemanda] = useState([]);
   const [selectedValue, setSelectedValue] = useState(null);
   const [newDoacao, setNewDoacao] = useState("");
 
-  const handleChange = (event, value) => {
+  const handleDemandaChange = (event, value) => {
     setSelectedValue(value);
-    if (value) {
+    if (value && !demanda.includes(value)) {
       setDemanda([...demanda, value]);
     }
   };
@@ -22,8 +22,8 @@ const EditarDoacoes = () => {
       await axios.patch("http://localhost:1339/api/doacao", {
         doacao: newDoacao,
       });
-      setDemanda([...demanda, newDoacao]);
       setNewDoacao("");
+      setDemanda(currentDemanda => [...currentDemanda, newDoacao]);
     } catch (error) {
       console.log(error);
     }
@@ -31,32 +31,42 @@ const EditarDoacoes = () => {
 
   const getDemandasDb = async () => {
     try {
-      const demandasDB = await axios.get(
-        "http://localhost:1339/api/demandas/doacoes"
-      );
-      console.log(demandasDB.data.message);
-      setDemanda(demandasDB.data.message);
+      const { data } = await axios.get("http://localhost:1339/api/demandas/doacoes");
+      setDemanda(data.message);  // Assuming 'data.message' is an array of demandas
     } catch (error) {
       console.log(error);
     }
   };
 
-  const getData = async () => {
+  const getDoacoes = async () => {
     try {
-      const response = await axios.get("http://localhost:1339/api/doacoes");
-      setData(response.data.message);
+      const { data } = await axios.get("http://localhost:1339/api/doacoes");
+      setDoacoes(data.message);  // Assuming 'data.message' is an array of doacoes
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      await Promise.all([getData(), getDemandasDb()]);
+    getDoacoes();
+    getDemandasDb();  // Ensure this is called so demanda is set initially
+  }, []);
+
+  useEffect(() => {
+    const updateDemandasDb = async () => {
+      try {
+        await axios.patch("http://localhost:1339/api/demandas/doacoes", {
+          demandas: demanda
+        });
+      } catch (error) {
+        console.error("Failed to update demandas in DB:", error);
+      }
     };
 
-    fetchData();
-  }, []);
+    if (demanda.length > 0) {
+      updateDemandasDb();
+    }
+  }, [demanda]);
 
   return (
     <Box p={3}>
@@ -72,8 +82,8 @@ const EditarDoacoes = () => {
 
       <Autocomplete
         value={selectedValue}
-        onChange={handleChange}
-        options={data}
+        onChange={handleDemandaChange}
+        options={doacoes}
         renderInput={(params) => (
           <TextField
             {...params}
