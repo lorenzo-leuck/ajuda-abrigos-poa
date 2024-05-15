@@ -111,6 +111,26 @@ router.get('/demandas/doacoes', async (req, res) => {
 });
 
 
+
+router.get('/demandas/voluntarios', async (req, res) => {
+  try {
+
+    const demandas = await Demandas.findOne(
+      { "abrigo": "vida" },
+      { _id: 0, "voluntarios": 1 }
+    ).lean();
+
+    const demandasArray = demandas ? demandas.voluntarios : [];
+
+    res.status(200).send(demandasArray);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+
 router.get('/demandas/date', async (req, res) => {
   try {
 
