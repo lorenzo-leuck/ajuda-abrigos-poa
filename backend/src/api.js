@@ -93,35 +93,29 @@ router.post('/login', async (req, res) => {
 });
 
 
-router.get('/demandas/:tipo', async (req, res) => {
+router.get('/demandas/doacoes', async (req, res) => {
   try {
-    const { tipo } = req.params;
 
     const demandas = await Demandas.findOne(
       { "abrigo": "vida" },
-      { _id: 0, [tipo]: { $ifNull: [[], `$${tipo}`] } }
+      { _id: 0, "doacoes": 1 }
     ).lean();
 
-    const demandasArray = demandas ? demandas[tipo] : [];
+    const demandasArray = demandas ? demandas.doacoes : [];
     console.log(demandasArray);
 
-    res.status(200).json({ message: demandasArray });
+    res.status(200).send(demandasArray);
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: err.message });
   }
 });
 
-
-
-
-
-router.patch('/demandas/:tipo', async (req, res) => {
+router.patch('/demandas/doacoes', async (req, res) => {
   try {
-    const { tipo } = req.params;
     const { demandas } = req.body;
 
-    await Demandas.updateOne({ "abrigo": "vida" }, { $set: { [tipo]: demandas } });
+    await Demandas.updateOne({ "abrigo": "vida" }, { $set: { "doacoes": demandas } });
 
     res.status(200).json({ message: "Array updated successfully" });
 

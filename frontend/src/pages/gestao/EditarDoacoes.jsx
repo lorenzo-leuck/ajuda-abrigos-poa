@@ -32,7 +32,7 @@ const EditarDoacoes = () => {
   const getDemandasDb = async () => {
     try {
       const { data } = await axios.get("http://localhost:1339/api/demandas/doacoes");
-      setDemanda(data.message);  // Assuming 'data.message' is an array of demandas
+      setDemanda(data);  // Assuming 'data.message' is an array of demandas
     } catch (error) {
       console.log(error);
     }
@@ -63,9 +63,9 @@ const EditarDoacoes = () => {
       }
     };
 
-    if (demanda.length > 0) {
-      updateDemandasDb();
-    }
+    // if (demanda.length > 0) {
+    //   updateDemandasDb();
+    // }
   }, [demanda]);
 
   return (
