@@ -31,14 +31,12 @@ const LoginPage = () => {
       if (response.ok) {
         console.log('Login successful:', data);
         localStorage.setItem('token', data.token);
-        // Handle successful login, e.g. redirect to dashboard
+        window.location.href = '/editar'
       } else {
         console.error('Login failed:', data.message);
-        // Display error message to the user
       }
     } catch (error) {
       console.error('Error:', error);
-      // Handle network or other errors
     }
   };
   

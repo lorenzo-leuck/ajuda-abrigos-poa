@@ -4,11 +4,10 @@ const mongoose = require('mongoose');
 const { Usuarios, Doacoes,Demandas, Voluntarios } = require('./model');
 const jwt = require('jsonwebtoken');
 
-router.get('/items', async (req, res) => {
+router.get('/doacoes', async (req, res) => {
   try {
-    // const items = await DonationItem.find();
-    console.log("asdasdasd");
-    res.json(["gol do gremio"]);
+    const doacoes = await Doacoes.find({}, {'_id':0, 'label': 1}).lean();
+    return doacoes
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

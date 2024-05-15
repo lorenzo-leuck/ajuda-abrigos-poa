@@ -7,6 +7,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import LoginIcon from '@mui/icons-material/Login';
 import { Link } from 'react-router-dom';
+const token = localStorage.getItem('token');
 
 const pages = ['Doações', 'Voluntários'];
 const pageRoutes = ['/doacoes', '/voluntarios'];
@@ -42,7 +43,7 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem('token');
     setAuth(false);
-    window.location.href = '/doacoes';
+    window.location.href = '/login';
   };
 
   return (
@@ -84,7 +85,7 @@ const Navbar = () => {
             Abrigo centro vida
           </Typography>
 
-          {auth ? (
+          {token ? (
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Account settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }} color="inherit">
