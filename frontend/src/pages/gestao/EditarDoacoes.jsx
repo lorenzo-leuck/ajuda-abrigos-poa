@@ -10,10 +10,23 @@ const EditarDoacoes = () => {
   const [selectedValue, setSelectedValue] = useState(null);
   const [newDoacao, setNewDoacao] = useState("");
 
-  const handleDemandaChange = (event, value) => {
+  const updateDemandasDb = async (demanda) => {
+    try {
+      await axios.patch("http://localhost:1339/api/demandas/doacoes", {
+        demandas: demanda,
+      });
+
+      await getDemandasDb();
+
+    } catch (error) {
+      console.error("Failed to update demandas in DB:", error);
+    }
+  };
+
+  const handleDemandaChange = async (event, value) => {
     setSelectedValue(value);
     if (value && !demanda.includes(value)) {
-      setDemanda([...demanda, value]);
+      await updateDemandasDb(value);
     }
   };
 
@@ -23,7 +36,7 @@ const EditarDoacoes = () => {
         doacao: newDoacao,
       });
       setNewDoacao("");
-      setDemanda(currentDemanda => [...currentDemanda, newDoacao]);
+      setDemanda((currentDemanda) => [...currentDemanda, newDoacao]);
     } catch (error) {
       console.log(error);
     }
@@ -31,8 +44,10 @@ const EditarDoacoes = () => {
 
   const getDemandasDb = async () => {
     try {
-      const { data } = await axios.get("http://localhost:1339/api/demandas/doacoes");
-      setDemanda(data);  // Assuming 'data.message' is an array of demandas
+      const { data } = await axios.get(
+        "http://localhost:1339/api/demandas/doacoes"
+      );
+      setDemanda(data); // Assuming 'data.message' is an array of demandas
     } catch (error) {
       console.log(error);
     }
@@ -41,7 +56,7 @@ const EditarDoacoes = () => {
   const getDoacoes = async () => {
     try {
       const { data } = await axios.get("http://localhost:1339/api/doacoes");
-      setDoacoes(data.message);  // Assuming 'data.message' is an array of doacoes
+      setDoacoes(data.message); // Assuming 'data.message' is an array of doacoes
     } catch (error) {
       console.log(error);
     }
@@ -49,24 +64,8 @@ const EditarDoacoes = () => {
 
   useEffect(() => {
     getDoacoes();
-    getDemandasDb();  // Ensure this is called so demanda is set initially
+    getDemandasDb(); // Ensure this is called so demanda is set initially
   }, []);
-
-  useEffect(() => {
-    const updateDemandasDb = async () => {
-      try {
-        await axios.patch("http://localhost:1339/api/demandas/doacoes", {
-          demandas: demanda
-        });
-      } catch (error) {
-        console.error("Failed to update demandas in DB:", error);
-      }
-    };
-
-    // if (demanda.length > 0) {
-    //   updateDemandasDb();
-    // }
-  }, [demanda]);
 
   return (
     <Box p={3}>

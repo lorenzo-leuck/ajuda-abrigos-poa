@@ -111,20 +111,39 @@ router.get('/demandas/doacoes', async (req, res) => {
   }
 });
 
+// place array
+
+// router.patch('/demandas/doacoes', async (req, res) => {
+//   try {
+//     const { demandas } = req.body;
+
+//     await Demandas.updateOne({ "abrigo": "vida" }, { $set: { "doacoes": demandas } });
+
+//     res.status(200).json({ message: "Array updated successfully" });
+
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json({ message: err.message });
+//   }
+// });
+
+// push elemente 
 router.patch('/demandas/doacoes', async (req, res) => {
   try {
     const { demandas } = req.body;
 
-    await Demandas.updateOne({ "abrigo": "vida" }, { $set: { "doacoes": demandas } });
+    const updatedDemandas = await Demandas.findOneAndUpdate({ "abrigo": "vida" }, { $push: { "doacoes": demandas } }, { new: true });
 
-    res.status(200).json({ message: "Array updated successfully" });
+
+console.log(updatedDemandas.doacoes );
+
+    res.status(200).json({ doacoes: updatedDemandas.doacoes });
 
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: err.message });
   }
 });
-
 
 
 
