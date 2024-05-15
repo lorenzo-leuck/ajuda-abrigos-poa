@@ -119,7 +119,6 @@ router.get('/demandas/date', async (req, res) => {
       { _id: 0, "date": 1 }
     );
     const demandasDate = demandas ? demandas.date : null;
-    console.log("aaaxaa", demandasDate);
 
     res.status(200).send(demandasDate);
   } catch (err) {

@@ -25,7 +25,6 @@ const Doacoes = () => {
   const [demandaDate, setDemandaDate] = useState(null);
 
   const formatBrazilianDate = (dateString) => {
-    console.log(dateString);
     const date = new Date(dateString);
     const formattedDate = date.toLocaleString('pt-BR', {
       day: '2-digit',
@@ -40,7 +39,6 @@ const Doacoes = () => {
   const getDemandasDate = async () => {
     try {
       const response = await axios.get("http://localhost:1339/api/demandas/date");
-      console.log("asdasdasdasdasd", response.data);
       setDemandaDate(response.data);
     } catch (error) {
       console.error(error);
@@ -66,7 +64,6 @@ const Doacoes = () => {
     color: "gray"
   };
 
-console.log(demandaDate);
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
