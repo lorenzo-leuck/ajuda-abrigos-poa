@@ -110,6 +110,25 @@ router.get('/demandas/doacoes', async (req, res) => {
   }
 });
 
+
+router.get('/demandas/date', async (req, res) => {
+  try {
+
+    const demandas = await Demandas.findOne(
+      { "abrigo": "vida" },
+      { _id: 0, "date": 1 }
+    );
+    const demandasDate = demandas ? demandas.date : null;
+    console.log("aaaxaa", demandasDate);
+
+    res.status(200).send(demandasDate);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
 // place array
 
 // router.patch('/demandas/doacoes', async (req, res) => {
@@ -130,40 +149,22 @@ router.get('/demandas/doacoes', async (req, res) => {
 router.patch('/demandas/doacoes', async (req, res) => {
   try {
     const { demandas } = req.body;
-
-    const updatedDemandas = await Demandas.findOneAndUpdate({ "abrigo": "vida" }, { $push: { "doacoes": demandas } }, { new: true });
-
-
-    res.status(200).json({ doacoes: updatedDemandas.doacoes });
-
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: err.message });
-  }
-});
-
-
-
-router.patch('/demandas/doacoes/remove', async (req, res) => {
-  try {
-    const { item } = req.body;  // for example, { item: 'item name' }
-
-
-
+    const currentDate = new Date(); 
+    console.log(currentDate);
     const updatedDemandas = await Demandas.findOneAndUpdate(
       { "abrigo": "vida" },
-      { $pull: { "doacoes": item } },
-      { new: true }
+      {
+        $push: { "doacoes": demandas }, 
+        $set: { "date": currentDate } 
+      },
+      { new: true } 
     );
 
     if (!updatedDemandas) {
       return res.status(404).json({ message: "No matching document found to update." });
     }
 
-console.log("remove update",item, updatedDemandas.doacoes);
-
-
-    res.status(200).json({ doacoes: updatedDemandas.doacoes });
+    res.status(200).json({ doacoes: updatedDemandas.doacoes, updatedDate: updatedDemandas.date });
 
   } catch (err) {
     console.log(err);
@@ -171,6 +172,29 @@ console.log("remove update",item, updatedDemandas.doacoes);
   }
 });
 
+router.patch('/demandas/doacoes/remove', async (req, res) => {
+  try {
+    const { item } = req.body;  
+    const currentDate = new Date(); 
+    const updatedDemandas = await Demandas.findOneAndUpdate(
+      { "abrigo": "vida" }, 
+      {
+        $pull: { "doacoes": item }, 
+        $set: { "date": currentDate } 
+      },
+      { new: true } 
+    );
 
+    if (!updatedDemandas) {
+      return res.status(404).json({ message: "No matching document found to update." });
+    }
+
+    res.status(200).json({ doacoes: updatedDemandas.doacoes, updatedDate: updatedDemandas.date });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+});
 
 module.exports = router;

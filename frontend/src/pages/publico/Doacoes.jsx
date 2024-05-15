@@ -22,6 +22,30 @@ const Doacoes = () => {
   }));
 
   const [demanda, setDemanda] = useState([]);
+  const [demandaDate, setDemandaDate] = useState(null);
+
+  const formatBrazilianDate = (dateString) => {
+    console.log(dateString);
+    const date = new Date(dateString);
+    const formattedDate = date.toLocaleString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+    return formattedDate;
+  };
+
+  const getDemandasDate = async () => {
+    try {
+      const response = await axios.get("http://localhost:1339/api/demandas/date");
+      console.log("asdasdasdasdasd", response.data);
+      setDemandaDate(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const getDemandasDb = async () => {
     try {
@@ -34,12 +58,24 @@ const Doacoes = () => {
 
   useEffect(() => {
     getDemandasDb();
+    getDemandasDate();
   }, []);
+
+  const typoStyle = {
+    fontFamily: "Ubuntu, sans-serif",
+    color: "gray"
+  };
+
+console.log(demandaDate);
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
-      <Typography variant="h4" p={3} fontWeight={200}>
+      <Typography variant="h4" p={3} fontWeight={200} style={typoStyle}>
         Demanda doações
+      </Typography>
+
+      <Typography variant="body1" marginBottom={2} fontWeight={100} style={typoStyle}>
+        Atualizado em {demandaDate ? formatBrazilianDate(demandaDate) : ""}
       </Typography>
 
       <Box display="flex" flexDirection="column" alignItems="center">

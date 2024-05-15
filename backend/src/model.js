@@ -27,7 +27,7 @@ const DemandasSchema = new mongoose.Schema({
   abrigo: String,
   doacoes: Schema.Types.Mixed,
   voluntarios: Schema.Types.Mixed,
-  lastEdited: { type: Date, default: Date.now }
+  date: { type: Date, default: Date.now }
 });
 
 const Demandas = mongoose.model('demandas', DemandasSchema);

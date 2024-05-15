@@ -49,7 +49,7 @@ const EditarDoacoes = () => {
         doacao: newDoacao,
       });
       setNewDoacao("");
-      setDemanda((currentDemanda) => [...currentDemanda, newDoacao]);
+      // setDemanda((currentDemanda) => [...currentDemanda, newDoacao]);
     } catch (error) {
       console.error(error);
     }
