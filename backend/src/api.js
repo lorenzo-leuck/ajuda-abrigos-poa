@@ -42,8 +42,6 @@ router.get('/voluntarios', async (req, res) => {
   try {
     const voluntarios = await Voluntarios.find({}).lean();
 
-    console.log(voluntarios);
-
     const labelValues = voluntarios.map(voluntario => voluntario.area);
 
 
@@ -97,19 +95,22 @@ router.post('/login', async (req, res) => {
 
 router.get('/demandas/:tipo', async (req, res) => {
   try {
-    const { tipo } = req.params
-    console.log(tipo);
+      const { tipo } = req.params;
+      
 
-    const demandas = await Demandas.find({ "abrigo": "vida" }, { '_id': 0, [`${tipo}`]: 1 }).lean();
+      const demandas = await Demandas.find({ "abrigo": "vida"}, { '_id': 0, [`${tipo}`]: 1 }).lean();
 
-    const demandasArray = demandas.map(demanda => demanda.tipo);
-    res.status(200).json({ message: demandasArray });
+      const demandasArray = demandas.map(demanda => demanda[tipo][0]);
+      console.log(demandasArray);
+
+      res.status(200).json({ message: demandasArray });
 
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: err.message });
+      console.log(err);
+      res.status(500).json({ message: err.message });
   }
 });
+
 
 router.patch('/demandas/:tipo', async (req, res) => {
   try {
