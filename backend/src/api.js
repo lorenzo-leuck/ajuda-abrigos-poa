@@ -18,6 +18,23 @@ router.get('/doacoes', async (req, res) => {
   }
 });
 
+
+
+router.patch('/doacao', async (req, res) => {
+  try {
+    const { doacao } = req.body
+
+    await Doacoes.create({"label": doacao, "categoria":"Etc"})
+console.log("updated doacoes");
+    res.status(200).json({ message: "updated doacoes" });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
 router.get('/voluntarios', async (req, res) => {
   try {
     const voluntarios = await Voluntarios.find({}).lean();
