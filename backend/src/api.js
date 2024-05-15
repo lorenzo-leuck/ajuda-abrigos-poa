@@ -147,4 +147,29 @@ console.log(updatedDemandas.doacoes );
 
 
 
+router.patch('/demandas/doacoes/remove', async (req, res) => {
+  try {
+    const { demandaToRemove } = req.body;  // for example, { item: 'item name' }
+
+    const updatedDemandas = await Demandas.findOneAndUpdate(
+      { "abrigo": "vida" },
+      { $pull: { "doacoes": demandaToRemove } },
+      { new: true }
+    );
+
+    if (!updatedDemandas) {
+      return res.status(404).json({ message: "No matching document found to update." });
+    }
+
+    console.log(updatedDemandas.doacoes);
+    res.status(200).json({ doacoes: updatedDemandas.doacoes });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+
 module.exports = router;
