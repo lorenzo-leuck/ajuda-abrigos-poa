@@ -114,9 +114,9 @@ router.get('/demandas/:tipo', async (req, res) => {
 router.patch('/demandas/:tipo', async (req, res) => {
   try {
     const { tipo } = req.params;
-    const { newArray } = req.body;
+    const { demandas } = req.body;
 
-    await Demandas.updateOne({ "abrigo": "vida" }, { $set: { [tipo]: newArray } });
+    await Demandas.updateOne({ "abrigo": "vida" }, { $set: { [tipo]: demandas } });
 
     res.status(200).json({ message: "Array updated successfully" });
 
