@@ -16,5 +16,8 @@
     "mongodb": "^5.6.0",
     "mongoose": "^6.0.12",
     "nodemon": "^2.0.22"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "4.9.5"
   }
 }
