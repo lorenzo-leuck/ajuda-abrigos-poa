@@ -12,7 +12,9 @@ const port = 1339;
 app.use(bodyParser.json());
 
 // Configure CORS
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:5174'] // Adjust accordingly based on your frontend URL
+}));
 
 app.use('/api', apiRoutes);
 
