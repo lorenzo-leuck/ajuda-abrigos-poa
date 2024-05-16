@@ -14,9 +14,9 @@ app.use(bodyParser.json());
 // Configure CORS
 app.use(cors({
   origin: [
-    'http://localhost:5174',   
-    'http://172.19.0.3:5174',  
-    'http://18.189.245.198:5174',
+    'http://localhost:80',   
+    'http://172.19.0.3:80',  
+    'http://18.189.245.198:80',
     'ajudaabrigospoa.com.br'   
   ]
 }));
