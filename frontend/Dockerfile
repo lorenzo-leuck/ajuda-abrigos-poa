@@ -1,15 +1,13 @@
-FROM node:18-alpine
+FROM node:16
 
 WORKDIR /app
 
-COPY package*.json ./
-
-RUN npm install --no-optional --force
-
 COPY . .
+
+RUN npm install
 
 EXPOSE 5174
 
 RUN npm run build
 
-CMD [ "npm", "run", "dev" ]
+CMD ["npm", "run", "dev"]
