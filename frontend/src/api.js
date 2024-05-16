@@ -3,7 +3,7 @@ const projectEnvironment = import.meta.env.VITE_NODE_ENV;
 
 let baseUrl;
 if (projectEnvironment === 'production') {
-  baseUrl = 'http://172.21.0.2:1339';  
+  baseUrl = 'http://172.18.0.2:1339';  
 } else {
   baseUrl = 'http://localhost:1339'; 
 }
