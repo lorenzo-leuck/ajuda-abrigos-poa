@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { TextField, Button, Typography, Container, Box } from '@mui/material';
+import { baseUrl } from '../../api';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -19,7 +20,7 @@ const LoginPage = () => {
     e.preventDefault();
   
     try {
-      const response = await fetch('http://localhost:1339/api/login', {
+      const response = await fetch(`${baseUrl}/api/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

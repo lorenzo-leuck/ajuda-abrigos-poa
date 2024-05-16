@@ -4,6 +4,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import axios from "axios";
 import SendIcon from "@mui/icons-material/Send";
 import CloseIcon from "@mui/icons-material/Close";
+import { baseUrl } from "../../api";
 
 const EditarVoluntarios = () => {
   const [voluntarios, setvoluntarios] = useState([]);
@@ -14,7 +15,7 @@ const EditarVoluntarios = () => {
   const handleRemoveItem = async (item) => {
     console.log(item);
     try {
-      await axios.patch("http://localhost:1339/api/demandas/voluntarios/remove", {
+      await axios.patch(`${baseUrl}/api/demandas/voluntarios/remove`, {
         item: item,
       });
 
@@ -27,7 +28,7 @@ const EditarVoluntarios = () => {
 
   const updateDemandasDb = async (demanda) => {
     try {
-      await axios.patch("http://localhost:1339/api/demandas/voluntarios", {
+      await axios.patch(`${baseUrl}/api/demandas/voluntarios`, {
         demandas: demanda,
       });
       await getDemandasDb();
@@ -45,7 +46,7 @@ const EditarVoluntarios = () => {
 
   const handleAddVoluntarios = async () => {
     try {
-      await axios.patch("http://localhost:1339/api/voluntario", {
+      await axios.patch(`${baseUrl}/api/voluntario`, {
         area: newVoluntario,
       });
       setnewVoluntario("");
@@ -64,7 +65,7 @@ const EditarVoluntarios = () => {
   const getDemandasDb = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:1339/api/demandas/voluntarios"
+        `${baseUrl}/api/demandas/voluntarios`
       );
       setDemanda(data); // Assuming 'data' is an array of demandas
     } catch (error) {
@@ -74,7 +75,7 @@ const EditarVoluntarios = () => {
 
   const getvoluntarios = async () => {
     try {
-      const { data } = await axios.get("http://localhost:1339/api/voluntarios");
+      const { data } = await axios.get(`${baseUrl}/api/voluntarios`);
       setvoluntarios(data.message); 
     } catch (error) {
       console.error(error);

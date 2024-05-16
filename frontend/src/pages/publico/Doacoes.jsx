@@ -6,6 +6,7 @@ import axios from "axios";
 import Container from "@mui/material/Container";
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
+import { baseUrl } from "../../api";
 
 const Doacoes = () => {
   const Item = styled(Paper)(({ theme }) => ({
@@ -38,7 +39,7 @@ const Doacoes = () => {
 
   const getDemandasDate = async () => {
     try {
-      const response = await axios.get("http://localhost:1339/api/demandas/date");
+      const response = await axios.get(`${baseUrl}/api/demandas/date`);
       setDemandaDate(response.data);
     } catch (error) {
       console.error(error);
@@ -47,7 +48,7 @@ const Doacoes = () => {
 
   const getDemandasDb = async () => {
     try {
-      const { data } = await axios.get("http://localhost:1339/api/demandas/doacoes");
+      const { data } = await axios.get(`${baseUrl}/api/demandas/doacoes`);
       setDemanda(data);
     } catch (error) {
       console.error(error);

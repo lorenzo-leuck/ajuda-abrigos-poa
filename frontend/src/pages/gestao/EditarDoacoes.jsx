@@ -4,6 +4,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import axios from "axios";
 import SendIcon from "@mui/icons-material/Send";
 import CloseIcon from "@mui/icons-material/Close";
+import { baseUrl } from "../../api";
 
 const EditarDoacoes = () => {
   const [doacoes, setDoacoes] = useState([]);
@@ -14,7 +15,7 @@ const EditarDoacoes = () => {
   const handleRemoveItem = async (item) => {
     console.log(item);
     try {
-      await axios.patch("http://localhost:1339/api/demandas/doacoes/remove", {
+      await axios.patch(`${baseUrl}/api/demandas/doacoes/remove`, {
         item: item,
       });
 
@@ -27,7 +28,7 @@ const EditarDoacoes = () => {
 
   const updateDemandasDb = async (demanda) => {
     try {
-      await axios.patch("http://localhost:1339/api/demandas/doacoes", {
+      await axios.patch(`${baseUrl}/api/demandas/doacoes`, {
         demandas: demanda,
       });
       await getDemandasDb();
@@ -45,7 +46,7 @@ const EditarDoacoes = () => {
 
   const handleAddDoacao = async () => {
     try {
-      await axios.patch("http://localhost:1339/api/doacao", {
+      await axios.patch(`${baseUrl}/api/doacao`, {
         doacao: newDoacao,
       });
       setNewDoacao("");
@@ -62,17 +63,18 @@ const EditarDoacoes = () => {
   const getDemandasDb = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:1339/api/demandas/doacoes"
+        `${baseUrl}/api/demandas/doacoes`
       );
       setDemanda(data); // Assuming 'data' is an array of demandas
     } catch (error) {
       console.error(error);
     }
   };
+  
 
   const getDoacoes = async () => {
     try {
-      const { data } = await axios.get("http://localhost:1339/api/doacoes");
+      const { data } = await axios.get(`${baseUrl}/api/doacoes`);
       setDoacoes(data.message); 
     } catch (error) {
       console.error(error);

@@ -1,3 +1,16 @@
+const projectEnvironment = import.meta.env.VITE_NODE_ENV;
+
+
+let baseUrl;
+if (projectEnvironment === 'production') {
+  baseUrl = 'http://172.21.0.2:1339';  
+} else {
+  baseUrl = 'http://localhost:1339'; 
+}
+
+
+
+
 const getAuthToken = () => {
     return localStorage.getItem('token');
   };
@@ -24,3 +37,5 @@ const getAuthToken = () => {
     return data;
   };
   
+
+export { baseUrl };

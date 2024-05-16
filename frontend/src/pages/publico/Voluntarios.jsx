@@ -38,7 +38,7 @@ const Voluntarios = () => {
 
   const getDemandasDate = async () => {
     try {
-      const response = await axios.get("http://localhost:1339/api/demandas/date");
+      const response = await axios.get(`${baseUrl}/api/demandas/date`);
       setDemandaDate(response.data);
     } catch (error) {
       console.error(error);
@@ -47,7 +47,7 @@ const Voluntarios = () => {
 
   const getDemandasDb = async () => {
     try {
-      const { data } = await axios.get("http://localhost:1339/api/demandas/voluntarios");
+      const { data } = await axios.get(`${baseUrl}/api/demandas/voluntarios`);
       setDemanda(data);
     } catch (error) {
       console.error(error);

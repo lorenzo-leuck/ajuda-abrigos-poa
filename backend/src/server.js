@@ -8,8 +8,10 @@ const dotenv = require('dotenv').config({ path: path.resolve(__dirname, '../.env
 
 const app = express();
 const port = 1339;
+
 app.use(bodyParser.json());
 
+// Configure CORS
 app.use(cors());
 
 app.use('/api', apiRoutes);
@@ -38,9 +40,6 @@ const connect = async () => {
     }
   } while (!isConnected);
 };
-
-
-
 
 app.listen(port, async () => {
   console.log('Server running on port 1339');
