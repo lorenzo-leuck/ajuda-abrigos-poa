@@ -82,7 +82,7 @@ const Navbar = () => {
           </Box>
 
           <Typography variant="h6" sx={{ flexGrow: 1, textAlign: 'center', fontFamily: 'Roboto' }}>
-            Abrigo centro vida
+          Abrigo 
           </Typography>
 
           {token ? (
