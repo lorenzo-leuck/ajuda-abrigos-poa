@@ -13,8 +13,13 @@ app.use(bodyParser.json());
 
 // Configure CORS
 app.use(cors({
-  origin: ['http://localhost:5174'] // Adjust accordingly based on your frontend URL
+  origin: [
+    'http://localhost:5174',   
+    'http://172.19.0.3:5174',  
+    'http://18.189.245.198:5174'   
+  ]
 }));
+
 
 app.use('/api', apiRoutes);
 
