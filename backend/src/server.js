@@ -16,7 +16,8 @@ app.use(cors({
   origin: [
     'http://localhost:5174',   
     'http://172.19.0.3:5174',  
-    'http://18.189.245.198:5174'   
+    'http://18.189.245.198:5174',
+    'ajudaabrigospoa.com.br'   
   ]
 }));
 
