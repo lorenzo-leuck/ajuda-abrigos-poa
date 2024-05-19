@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
 const { Usuarios, Doacoes, Demandas, Voluntarios } = require('./model');
 const jwt = require('jsonwebtoken');
 
@@ -17,11 +16,6 @@ router.get('/doacoes', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-
-
-
-
-
 
 router.patch('/doacao', async (req, res) => {
   try {
@@ -99,7 +93,7 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
 
-    const token = jwt.sign({ userId: userData._id }, 'Td?B75q0uOX');
+    const token = jwt.sign({ userId: userData._id }, process.env.AUTH_KEY);
 
     console.log("Login successful:", token);
     res.status(200).json({ message: 'Login successful', userData, token });

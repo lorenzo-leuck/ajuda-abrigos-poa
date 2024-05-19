@@ -4,7 +4,6 @@ const projectEnvironment = import.meta.env.VITE_NODE_ENV;
 let baseUrl;
 if (projectEnvironment === 'production') {
   baseUrl = 'http://ajudaabrigospoa.com.br:1339';  
-  // baseUrl = 'http://18.189.245.198:1339';  
 } else {
   baseUrl = 'http://localhost:1339'; 
 }
