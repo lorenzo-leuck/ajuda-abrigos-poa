@@ -1,14 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { Typography } from "@mui/material";
-import Navbar from "../../components/Navbar";
-import Box from "@mui/material/Box";
-import axios from "axios";
-import Container from "@mui/material/Container";
-import Paper from '@mui/material/Paper';
+import { Typography, Box, Paper } from "@mui/material";
 import { styled } from '@mui/material/styles';
-import { baseUrl } from "../../api";
+import axios from "axios";
 
-const Voluntarios = () => {
+
+import Toolbar from '@mui/material/Toolbar';
+import { baseUrl } from "../../../api";
+import Navbar from "../../../components/Navbar";
+
+
+const Abrigo = ({ displayType }) => {
+
+
+  const [currentPage, setCurrentPage] = useState('home'); // Default page
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     padding: theme.spacing(1.5),
@@ -18,12 +28,11 @@ const Voluntarios = () => {
     borderRadius: theme.spacing(1),
     boxShadow: theme.shadows[1],
     fontFamily: 'Roboto',
-    width: 300, 
-    height: 15, 
+    width: 300
   }));
 
-  const [demanda, setDemanda] = useState([]);
-  const [demandaDate, setDemandaDate] = useState(null);
+  const [data, setData] = useState([]);
+  const [lastUpdate, setLastUpdate] = useState(null);
 
   const formatBrazilianDate = (dateString) => {
     const date = new Date(dateString);
@@ -37,54 +46,60 @@ const Voluntarios = () => {
     return formattedDate;
   };
 
-  const getDemandasDate = async () => {
+  const fetchData = async () => {
     try {
-      const response = await axios.get(`${baseUrl}/api/demandas/date`);
-      setDemandaDate(response.data);
+      const response = await axios.get(`${baseUrl}/api/demandas/${displayType}`);
+      setData(response.data);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const getDemandasDb = async () => {
+  const fetchDate = async () => {
     try {
-      const { data } = await axios.get(`${baseUrl}/api/demandas/voluntarios`);
-      setDemanda(data);
+      const response = await axios.get(`${baseUrl}/api/demandas/date/${displayType}`);
+      setLastUpdate(response.data);
     } catch (error) {
-      console.error(error);
+      console.error('Failed to fetch the last update date:', error);
     }
   };
 
   useEffect(() => {
-    getDemandasDb();
-    getDemandasDate();
-  }, []);
+    fetchData();
+    fetchDate();
+  }, [displayType]);
 
   const typoStyle = {
     fontFamily: "Ubuntu, sans-serif",
     color: "gray"
   };
 
-
   return (
+
+
+<>
+<Navbar handlePageChange={handlePageChange} />
+<Toolbar/>
+      
     <Box display="flex" flexDirection="column" alignItems="center">
+aaaaaa{currentPage}
       <Typography variant="h4" p={3} fontWeight={200} style={typoStyle}>
-        Demanda Voluntários
+        Demanda {displayType === 'voluntarios' ? 'Voluntários' : 'Doações'}
       </Typography>
-
       <Typography variant="body1" marginBottom={2} fontWeight={100} style={typoStyle}>
-        Atualizado em {demandaDate ? formatBrazilianDate(demandaDate) : ""}
+        Atualizado em {lastUpdate ? formatBrazilianDate(lastUpdate) : ""}
       </Typography>
-
       <Box display="flex" flexDirection="column" alignItems="center">
-        {demanda.map((item, index) => (
+        {data.map((item, index) => (
           <Item key={index}>
             {item}
           </Item>
         ))}
       </Box>
     </Box>
+    </>
+
   );
 };
 
-export default Voluntarios;
+export default Abrigo;

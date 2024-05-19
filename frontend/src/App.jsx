@@ -2,36 +2,27 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import Navbar from "./components/Navbar";
-import Doacoes from "./pages/publico/Doacoes";
 import Box from "@mui/material/Box";
 import Toolbar from '@mui/material/Toolbar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Panorama from "./pages/publico/Panorama";
-import Voluntarios from "./pages/publico/Voluntarios";
-import Editar from "./pages/gestao/Editar";
-import Contatos from "./pages/gestao/Contatos";
-import LoginPage from "./pages/gestao/Login";
+// import Panorama from "./pages/local/publico/Panorama";
+import Editar from "./sets/local/gestao/Editar";
+import LoginPage from "./sets/local/Login";
 import PrivateRoute from './components/PrivateRoute'; // Make sure to create this component
+import Abrigo from "./sets/local/publico/Abrigo";
+
 
 const App = () => {
   return (
     <>
-      <Navbar />
-      <Toolbar />
       <Routes>
-        <Route path="/" element={<Doacoes />} />
-        <Route path="/doacoes" element={<Doacoes />} />
-        <Route path="/voluntarios" element={<Voluntarios />} />
-        <Route path="/editar" element={
+        <Route path="/*" element={<Abrigo />} />
+        <Route path=":prefix/editar" element={
           <PrivateRoute>
             <Editar />
           </PrivateRoute>
         } />
-        <Route path="/contatos" element={
-          <PrivateRoute>
-            <Contatos />
-          </PrivateRoute>
-        } />
+
         <Route path="/login" element={<LoginPage />} />
       </Routes>
     </>

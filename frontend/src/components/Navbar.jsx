@@ -10,12 +10,11 @@ import { Link } from 'react-router-dom';
 const token = localStorage.getItem('token');
 
 const pages = ['Doações', 'Voluntários'];
-const pageRoutes = ['/doacoes', '/voluntarios'];
 
 const settings = ['Editar', 'Sair'];
 const settingsRoutes = ['/editar', '/login'];
 
-const Navbar = () => {
+const Navbar = ({ handlePageChange }) => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [auth, setAuth] = useState(true);
@@ -74,7 +73,7 @@ const Navbar = () => {
             >
 
               {pages.map((page, index) => (
-                <MenuItem key={page} component={Link} to={pageRoutes[index]} onClick={handleCloseNavMenu}>
+                <MenuItem key={page} onClick={() => handlePageChange(page)}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
