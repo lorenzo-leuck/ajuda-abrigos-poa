@@ -71,8 +71,8 @@ const Navbar = () => {
               transformOrigin={{ vertical: 'top', horizontal: 'left' }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
-              sx={{ display: { xs: 'block', md: 'none' } }}
             >
+
               {pages.map((page, index) => (
                 <MenuItem key={page} component={Link} to={pageRoutes[index]} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">{page}</Typography>
@@ -82,7 +82,7 @@ const Navbar = () => {
           </Box>
 
           <Typography variant="h6" sx={{ flexGrow: 1, textAlign: 'center', fontFamily: 'Roboto' }}>
-          Abrigo 
+            Abrigo
           </Typography>
 
           {token ? (
