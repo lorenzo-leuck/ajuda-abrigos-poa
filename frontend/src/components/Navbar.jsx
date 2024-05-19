@@ -9,7 +9,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import { Link } from 'react-router-dom';
 const token = localStorage.getItem('token');
 
-const pages = ['Doações', 'Voluntários'];
+const pages = ['doacoes', 'voluntarios'];
 
 const settings = ['Editar', 'Sair'];
 const settingsRoutes = ['/editar', '/login'];
