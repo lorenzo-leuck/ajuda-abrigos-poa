@@ -40,7 +40,7 @@ router.patch('/voluntarios', async (req, res) => {
     const { voluntarios } = req.body
 
     await Voluntarios.create({ "area": voluntarios })
-  
+
     res.status(200).json({ message: "updated voluntarios" });
 
   } catch (err) {
@@ -65,14 +65,14 @@ router.patch('/doacoes', async (req, res) => {
 
 
 router.get('/demandas/:itemType', async (req, res) => {
-  const type = req.params.itemType; 
+  const type = req.params.itemType;
   if (!['doacoes', 'voluntarios'].includes(type)) {
     return res.status(400).json({ message: "Invalid path parameter. Use 'doacoes' or 'voluntarios'." });
   }
 
   try {
     const projectField = {};
-    projectField[type] = 1; 
+    projectField[type] = 1;
 
     const demandas = await Demandas.findOne(
       { "abrigo": "vida" },
@@ -90,6 +90,40 @@ router.get('/demandas/:itemType', async (req, res) => {
 
 
 
+router.patch('/demandas/:itemType', async (req, res) => {
+  try {
+    const { itemType } = req.params;
+    const { demandas } = req.body;
+
+    if (!['voluntarios', 'doacoes'].includes(itemType)) {
+      return res.status(400).json({ message: "Invalid type specified. Use 'voluntarios' or 'doacoes'." });
+    }
+
+    const currentDate = new Date();
+    console.log(currentDate);
+
+    const updateOperation = {
+      $push: { [itemType]: demandas },
+      $set: { "date": currentDate }
+    };
+
+    const updatedDemandas = await Demandas.findOneAndUpdate(
+      { "abrigo": "vida" },
+      updateOperation,
+      { new: true }
+    );
+
+    if (!updatedDemandas) {
+      return res.status(404).json({ message: "No matching document found to update." });
+    }
+
+    res.status(200).json({ [itemType]: updatedDemandas[itemType], updatedDate: updatedDemandas.date });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+});
 
 router.get('/demandasDate', async (req, res) => {
   try {
@@ -107,133 +141,38 @@ router.get('/demandasDate', async (req, res) => {
   }
 });
 
-
-// place array
-
-// router.patch('/demandas/doacoes', async (req, res) => {
-//   try {
-//     const { demandas } = req.body;
-
-//     await Demandas.updateOne({ "abrigo": "vida" }, { $set: { "doacoes": demandas } });
-
-//     res.status(200).json({ message: "Array updated successfully" });
-
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).json({ message: err.message });
-//   }
-// });
-
-// push elemente 
-router.patch('/demandas/doacoes', async (req, res) => {
+router.patch('/demandasRemove/:type', async (req, res) => {
   try {
-    const { demandas } = req.body;
-    const currentDate = new Date(); 
-    console.log(currentDate);
+    const { itemType } = req.params; 
+    const { item } = req.body;
+    const currentDate = new Date();
+
+    if (!['doacoes', 'voluntarios'].includes(itemType)) {
+      return res.status(400).json({ message: "Invalid type specified. Use 'doacoes' or 'voluntarios'." });
+    }
+
+    const update = {
+      $pull: { [itemType]: item },
+      $set: { "date": currentDate }
+    };
+
     const updatedDemandas = await Demandas.findOneAndUpdate(
       { "abrigo": "vida" },
-      {
-        $push: { "doacoes": demandas }, 
-        $set: { "date": currentDate } 
-      },
-      { new: true } 
+      update,
+      { new: true }
     );
 
     if (!updatedDemandas) {
       return res.status(404).json({ message: "No matching document found to update." });
     }
 
-    res.status(200).json({ doacoes: updatedDemandas.doacoes, updatedDate: updatedDemandas.date });
+    res.status(200).json({ [itemType]: updatedDemandas[itemType], updatedDate: updatedDemandas.date });
 
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: err.message });
   }
 });
-
-router.patch('/demandas/doacoes/remove', async (req, res) => {
-  try {
-    const { item } = req.body;  
-    const currentDate = new Date(); 
-    const updatedDemandas = await Demandas.findOneAndUpdate(
-      { "abrigo": "vida" }, 
-      {
-        $pull: { "doacoes": item }, 
-        $set: { "date": currentDate } 
-      },
-      { new: true } 
-    );
-
-    if (!updatedDemandas) {
-      return res.status(404).json({ message: "No matching document found to update." });
-    }
-
-    res.status(200).json({ doacoes: updatedDemandas.doacoes, updatedDate: updatedDemandas.date });
-
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: err.message });
-  }
-});
-
-
-
-router.patch('/demandas/voluntarios', async (req, res) => {
-  try {
-    const { demandas } = req.body;
-    const currentDate = new Date(); 
-    console.log(currentDate);
-    const updatedDemandas = await Demandas.findOneAndUpdate(
-      { "abrigo": "vida" },
-      {
-        $push: { "voluntarios": demandas }, 
-        $set: { "date": currentDate } 
-      },
-      { new: true } 
-    );
-
-    if (!updatedDemandas) {
-      return res.status(404).json({ message: "No matching document found to update." });
-    }
-
-    res.status(200).json({ voluntarios: updatedDemandas.voluntarios, updatedDate: updatedDemandas.date });
-
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: err.message });
-  }
-});
-
-router.patch('/demandas/voluntarios/remove', async (req, res) => {
-  try {
-    const { item } = req.body;  
-    const currentDate = new Date(); 
-    const updatedDemandas = await Demandas.findOneAndUpdate(
-      { "abrigo": "vida" }, 
-      {
-        $pull: { "voluntarios": item }, 
-        $set: { "date": currentDate } 
-      },
-      { new: true } 
-    );
-
-    if (!updatedDemandas) {
-      return res.status(404).json({ message: "No matching document found to update." });
-    }
-
-    res.status(200).json({ voluntarios: updatedDemandas.voluntarios, updatedDate: updatedDemandas.date });
-
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: err.message });
-  }
-});
-
-
-
-
-
-
 
 router.post('/login', async (req, res) => {
   const login = req.body;

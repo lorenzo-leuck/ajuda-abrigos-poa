@@ -16,7 +16,6 @@ const EditarItems = ({ itemType, abrigo }) => {
         const itemsResponse = await axios.get(`${baseUrl}/api/${itemType}`);
         setItems(itemsResponse.data.message);
         const demandasResponse = await axios.get(`${baseUrl}/api/demandas/${itemType}`);
-        console.log("funcao", itemType);
         setDemandas(demandasResponse.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -44,7 +43,7 @@ const EditarItems = ({ itemType, abrigo }) => {
 
   const handleRemoveItem = async (item) => {
     try {
-      await axios.patch(`${baseUrl}/api/demandas/${itemType}/remove`, { item });
+      await axios.patch(`${baseUrl}/api/demandasRemove/${itemType}/remove`, { item });
     } catch (error) {
       console.error("Failed to remove item:", error);
     }
