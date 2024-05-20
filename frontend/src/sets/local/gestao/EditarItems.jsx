@@ -5,19 +5,18 @@ import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 import { baseUrl } from "../../../api";
 
-const EditarItems = ({ itemType }) => {
+const EditarItems = ({ itemType, abrigo }) => {
   const [items, setItems] = useState([]);
   const [demandas, setDemandas] = useState([]);
   const [selectedValue, setSelectedValue] = useState(null);
   const [newValue, setNewValue] = useState("");
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const itemsResponse = await axios.get(`${baseUrl}/api/${itemType}`);
         setItems(itemsResponse.data.message);
-        
         const demandasResponse = await axios.get(`${baseUrl}/api/demandas/${itemType}`);
+        console.log("funcao", itemType);
         setDemandas(demandasResponse.data);
       } catch (error) {
         console.error("Error fetching data:", error);

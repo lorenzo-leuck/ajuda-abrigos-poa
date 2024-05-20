@@ -17,36 +17,6 @@ router.get('/doacoes', async (req, res) => {
   }
 });
 
-router.patch('/doacao', async (req, res) => {
-  try {
-    const { doacao } = req.body
-
-    await Doacoes.create({ "label": doacao, "categoria": "Etc" })
-    console.log("updated doacoes");
-    res.status(200).json({ message: "updated doacoes" });
-
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: err.message });
-  }
-});
-
-
-
-router.patch('/voluntario', async (req, res) => {
-  try {
-    const { area } = req.body
-
-    await Voluntarios.create({ "area": area })
-  
-    res.status(200).json({ message: "updated voluntarios" });
-
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: err.message });
-  }
-});
-
 
 
 router.get('/voluntarios', async (req, res) => {
@@ -65,54 +35,51 @@ router.get('/voluntarios', async (req, res) => {
 });
 
 
-
-router.post('/items', async (req, res) => {
-  const item = new DonationItem({
-    name: req.body.name,
-    category: req.body.category,
-    shelter: req.body.shelter
-  });
+router.patch('/voluntarios', async (req, res) => {
   try {
-    const newItem = await item.save();
-    res.status(201).json(newItem);
+    const { voluntarios } = req.body
+
+    await Voluntarios.create({ "area": voluntarios })
+  
+    res.status(200).json({ message: "updated voluntarios" });
+
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+router.patch('/doacoes', async (req, res) => {
+  try {
+    const { doacoes } = req.body
+
+    await Doacoes.create({ "label": doacoes, "categoria": "Etc" })
+    console.log("updated doacoes");
+    res.status(200).json({ message: "updated doacoes" });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
   }
 });
 
 
-
-router.post('/login', async (req, res) => {
-  const login = req.body;
-  const { username, password } = login;
-
-  try {
-    const userData = await Usuarios.findOne({ "username": username, "password": password });
-
-    if (!userData) {
-      return res.status(401).json({ message: 'Invalid username or password' });
-    }
-
-    const token = jwt.sign({ userId: userData._id }, process.env.AUTH_KEY);
-
-    console.log("Login successful:", token);
-    res.status(200).json({ message: 'Login successful', userData, token });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'An error occurred during login' });
+router.get('/demandas/:itemType', async (req, res) => {
+  const type = req.params.itemType; 
+  if (!['doacoes', 'voluntarios'].includes(type)) {
+    return res.status(400).json({ message: "Invalid path parameter. Use 'doacoes' or 'voluntarios'." });
   }
-});
 
-
-router.get('/demandas/doacoes', async (req, res) => {
   try {
+    const projectField = {};
+    projectField[type] = 1; 
 
     const demandas = await Demandas.findOne(
       { "abrigo": "vida" },
-      { _id: 0, "doacoes": 1 }
+      { _id: 0, ...projectField }
     ).lean();
 
-    const demandasArray = demandas ? demandas.doacoes : [];
+    const demandasArray = demandas ? demandas[type] : [];
 
     res.status(200).send(demandasArray);
   } catch (err) {
@@ -123,26 +90,8 @@ router.get('/demandas/doacoes', async (req, res) => {
 
 
 
-router.get('/demandas/voluntarios', async (req, res) => {
-  try {
 
-    const demandas = await Demandas.findOne(
-      { "abrigo": "vida" },
-      { _id: 0, "voluntarios": 1 }
-    ).lean();
-
-    const demandasArray = demandas ? demandas.voluntarios : [];
-
-    res.status(200).send(demandasArray);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: err.message });
-  }
-});
-
-
-
-router.get('/demandas/date', async (req, res) => {
+router.get('/demandasDate', async (req, res) => {
   try {
 
     const demandas = await Demandas.findOne(
@@ -279,6 +228,34 @@ router.patch('/demandas/voluntarios/remove', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
+
+
+
+
+
+
+router.post('/login', async (req, res) => {
+  const login = req.body;
+  const { username, password } = login;
+
+  try {
+    const userData = await Usuarios.findOne({ "username": username, "password": password });
+
+    if (!userData) {
+      return res.status(401).json({ message: 'Invalid username or password' });
+    }
+
+    const token = jwt.sign({ userId: userData._id }, process.env.AUTH_KEY);
+
+    console.log("Login successful:", token);
+    res.status(200).json({ message: 'Login successful', userData, token });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'An error occurred during login' });
+  }
+});
+
 
 
 

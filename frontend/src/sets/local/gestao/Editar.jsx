@@ -5,11 +5,12 @@ import { Toolbar } from '@mui/material';
 import Navbar from '../../../components/Navbar';
 
 const Editar = () => {
+  const abrigo = localStorage.getItem('abrigo')
+  console.log("////////", abrigo);
   const [selectedOption, setSelectedOption] = useState("doacoes");
-  const [currentPage, setCurrentPage] = useState('doacoes'); 
 
   const handlePageChange = (page) => {
-    setCurrentPage(page);
+    window.location.href = `/${abrigo}`
   };
   return (
 
@@ -36,6 +37,7 @@ const Editar = () => {
       </Box>
       <EditarItems
         itemType={selectedOption}
+        abrigo={abrigo}
       />
     </Box>
 

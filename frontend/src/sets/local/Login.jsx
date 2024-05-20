@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
 import { TextField, Button, Typography, Container, Box } from '@mui/material';
 import { baseUrl } from '../../api';
+import { Toolbar } from '@mui/material';
+import Navbar from '../../components/Navbar';
+
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
   });
+
+  const handlePageChange = (page) => {
+    window.location.href = '/'
+  };
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,9 +38,11 @@ const LoginPage = () => {
   
       const data = await response.json();
       if (response.ok) {
+        const abrigo = data.userData.abrigo
         console.log('Login successful:', data);
         localStorage.setItem('token', data.token);
-        window.location.href = '/editar'
+        localStorage.setItem('abrigo', abrigo);
+        window.location.href = `/editar`
       } else {
         console.error('Login failed:', data.message);
       }
@@ -42,6 +52,11 @@ const LoginPage = () => {
   };
   
   return (
+
+<>
+<Navbar handlePageChange={handlePageChange} />
+        <Toolbar />
+
     <Container maxWidth="xs">
       <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Typography variant="h4" gutterBottom>
@@ -71,6 +86,8 @@ const LoginPage = () => {
         </form>
       </Box>
     </Container>
+
+    </>
   );
 };
 

@@ -42,7 +42,7 @@ const AbrigoItems = ({ currentPage }) => {
 
   const fetchDate = async () => {
     try {
-      const response = await axios.get(`${baseUrl}/api/demandas/date`);
+      const response = await axios.get(`${baseUrl}/api/demandasDate`);
       setLastUpdate(response.data);
     } catch (error) {
       console.error('Failed to fetch the last update date:', error);
