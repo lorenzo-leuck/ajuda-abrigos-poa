@@ -16,14 +16,14 @@ const App = () => {
   return (
     <>
       <Routes>
-        <Route path="/*" element={<Abrigo />} />
-        <Route path=":prefix/editar" element={
+        <Route path="/editar" element={
           <PrivateRoute>
             <Editar />
           </PrivateRoute>
         } />
 
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/*" element={<Abrigo />} />
       </Routes>
     </>
   );

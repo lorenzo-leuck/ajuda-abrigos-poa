@@ -5,78 +5,58 @@ import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 import { baseUrl } from "../../../api";
 
-
-const EditarItems = ({ itemType, apiEndpoint }) => {
+const EditarItems = ({ itemType }) => {
   const [items, setItems] = useState([]);
   const [demandas, setDemandas] = useState([]);
   const [selectedValue, setSelectedValue] = useState(null);
   const [newValue, setNewValue] = useState("");
 
-  const handleRemoveItem = async (item) => {
-    try {
-      await axios.patch(`${baseUrl}/api/demandas/${apiEndpoint}/remove`, { item });
-      getDemandasDb();
-    } catch (error) {
-      console.error("Failed to remove item:", error);
-    }
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const itemsResponse = await axios.get(`${baseUrl}/api/${itemType}`);
+        setItems(itemsResponse.data.message);
+        
+        const demandasResponse = await axios.get(`${baseUrl}/api/demandas/${itemType}`);
+        setDemandas(demandasResponse.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-  const updateDemandasDb = async (item) => {
+    fetchData();
+  }, [itemType]); // Notice `itemType` is added as a dependency here
+
+  const handleAddItem = async () => {
     try {
-      await axios.patch(`${baseUrl}/api/demandas/${apiEndpoint}`, { demandas: item });
-      getDemandasDb();
+      await axios.patch(`${baseUrl}/api/${itemType}`, { [itemType]: newValue });
+      setNewValue("");
     } catch (error) {
-      console.error("Failed to update demandas in DB:", error);
+      console.error("Failed to add item:", error);
     }
   };
 
   const handleDemandaChange = async (event, value) => {
     setSelectedValue(value);
     if (value && !demandas.includes(value)) {
-      updateDemandasDb(value);
+      await axios.patch(`${baseUrl}/api/demandas/${itemType}`, { demandas: value });
     }
   };
 
-  const handleAddItem = async () => {
+  const handleRemoveItem = async (item) => {
     try {
-      await axios.patch(`${baseUrl}/api/${apiEndpoint}`, { [itemType]: newValue });
-      setNewValue("");
-      updateDemandasDb(newValue);
-      getDemandasDb();
+      await axios.patch(`${baseUrl}/api/demandas/${itemType}/remove`, { item });
     } catch (error) {
-      console.error(error);
+      console.error("Failed to remove item:", error);
     }
   };
-
-  const getDemandasDb = async () => {
-    try {
-      const response = await axios.get(`${baseUrl}/api/demandas/${apiEndpoint}`);
-      setDemandas(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const getItems = async () => {
-    try {
-      const response = await axios.get(`${baseUrl}/api/${apiEndpoint}`);
-      setItems(response.data.message);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    getItems();
-    getDemandasDb();
-  }, []);
 
   return (
     <Box p={3}>
       <TextField
         value={newValue}
         onChange={(e) => setNewValue(e.target.value)}
-        placeholder={`Novo ${itemType}`}
+        placeholder={`Adicionar ${itemType}`}
         sx={{ width: 300, marginRight: 1, marginBottom: 3 }}
       />
       <IconButton variant="contained" onClick={handleAddItem}>
@@ -87,7 +67,7 @@ const EditarItems = ({ itemType, apiEndpoint }) => {
         value={selectedValue}
         onChange={handleDemandaChange}
         options={items}
-        renderInput={(params) => <TextField {...params} label={`Selecione ${itemType}`} sx={{ width: 300 }} />}
+        renderInput={(params) => <TextField {...params} label={`Selecionar ${itemType}`} sx={{ width: 300 }} />}
       />
 
       <Box p={3}>
