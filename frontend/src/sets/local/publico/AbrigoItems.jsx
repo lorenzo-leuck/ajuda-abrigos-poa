@@ -17,6 +17,8 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const AbrigoItems = ({ currentPage }) => {
+
+  const abrigo = localStorage.getItem('abrigo')
   const [data, setData] = useState([]);
   const [lastUpdate, setLastUpdate] = useState(null);
 
@@ -42,7 +44,7 @@ const AbrigoItems = ({ currentPage }) => {
 
   const fetchDate = async () => {
     try {
-      const response = await axios.get(`${baseUrl}/api/demandasDate`);
+      const response = await axios.get(`${baseUrl}/api/demandasDate?abrigo=${abrigo}`);
       setLastUpdate(response.data);
     } catch (error) {
       console.error('Failed to fetch the last update date:', error);

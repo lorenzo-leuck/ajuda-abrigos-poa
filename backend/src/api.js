@@ -66,6 +66,7 @@ router.patch('/doacoes', async (req, res) => {
 
 router.get('/demandas/:itemType', async (req, res) => {
   const type = req.params.itemType;
+  const { abrigo } = req.query;
   if (!['doacoes', 'voluntarios'].includes(type)) {
     return res.status(400).json({ message: "Invalid path parameter. Use 'doacoes' or 'voluntarios'." });
   }
@@ -75,7 +76,7 @@ router.get('/demandas/:itemType', async (req, res) => {
     projectField[type] = 1;
 
     const demandas = await Demandas.findOne(
-      { "abrigo": "vida" },
+      { "abrigo": abrigo },
       { _id: 0, ...projectField }
     ).lean();
 
@@ -94,6 +95,7 @@ router.patch('/demandas/:itemType', async (req, res) => {
   try {
     const { itemType } = req.params;
     const { demandas } = req.body;
+    const { abrigo } = req.query;
 
     if (!['voluntarios', 'doacoes'].includes(itemType)) {
       return res.status(400).json({ message: "Invalid type specified. Use 'voluntarios' or 'doacoes'." });
@@ -108,7 +110,7 @@ router.patch('/demandas/:itemType', async (req, res) => {
     };
 
     const updatedDemandas = await Demandas.findOneAndUpdate(
-      { "abrigo": "vida" },
+      { "abrigo": abrigo },
       updateOperation,
       { new: true }
     );
@@ -126,10 +128,11 @@ router.patch('/demandas/:itemType', async (req, res) => {
 });
 
 router.get('/demandasDate', async (req, res) => {
+  const { abrigo } = req.query;
   try {
 
     const demandas = await Demandas.findOne(
-      { "abrigo": "vida" },
+      { "abrigo": abrigo },
       { _id: 0, "date": 1 }
     );
     const demandasDate = demandas ? demandas.date : null;
@@ -145,6 +148,8 @@ router.patch('/demandasRemove/:type', async (req, res) => {
   try {
     const { itemType } = req.params; 
     const { item } = req.body;
+    const { abrigo } = req.query;
+
     const currentDate = new Date();
 
     if (!['doacoes', 'voluntarios'].includes(itemType)) {
@@ -157,7 +162,7 @@ router.patch('/demandasRemove/:type', async (req, res) => {
     };
 
     const updatedDemandas = await Demandas.findOneAndUpdate(
-      { "abrigo": "vida" },
+      { "abrigo": abrigo },
       update,
       { new: true }
     );
