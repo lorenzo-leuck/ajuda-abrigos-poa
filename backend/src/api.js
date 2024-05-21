@@ -1,7 +1,35 @@
 const express = require('express');
 const router = express.Router();
-const { Usuarios, Doacoes, Demandas, Voluntarios } = require('./model');
+const { Usuarios, Doacoes, Demandas, Voluntarios, Abrigos } = require('./model');
 const jwt = require('jsonwebtoken');
+
+
+router.get('/abrigos', async (req, res) => {
+  try {
+    const abrigos = await Abrigos.find({}, { '_id': 0, 'abrigo': 1, 'titulo':1 }).lean();
+
+
+    res.status(200).json({ message: abrigos });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+router.get('/abrigo', async (req, res) => {
+  try {
+    const { nomeAbrigo } = req.params;
+    const abrigo = await Abrigos.findOne({'abrigo':nomeAbrigo}).lean();
+    res.status(200).json({ message: abrigo });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
 
 router.get('/doacoes', async (req, res) => {
   try {

@@ -41,6 +41,19 @@ const VoluntariosSchema = new mongoose.Schema({
 
 const Voluntarios = mongoose.model('areaVoluntarios', VoluntariosSchema, 'areaVoluntarios');
 
+
+
+const AbrigosSchema = new mongoose.Schema({
+  titulo: String,
+  abrigo: String,
+  endereco: String,
+  contato: String,
+  info: String,
+});
+
+const Abrigos = mongoose.model('abrigos', AbrigosSchema, 'abrigos');
+
+
 module.exports = {
-    Usuarios, Doacoes,Demandas, Voluntarios
+    Usuarios, Doacoes,Demandas, Voluntarios, Abrigos
 };

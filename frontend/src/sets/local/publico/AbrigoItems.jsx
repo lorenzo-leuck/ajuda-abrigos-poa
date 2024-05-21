@@ -35,8 +35,6 @@ const AbrigoItems = ({ currentPage, nomeAbrigo }) => {
   const fetchData = async () => {
     try {
       const response = await axios.get(`${baseUrl}/api/demandas/${currentPage}?abrigo=${nomeAbrigo}`);
-      console.log(currentPage);
-      console.log(response);
       setData(response.data);
     } catch (error) {
       console.error(error);

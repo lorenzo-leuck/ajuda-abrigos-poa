@@ -39,7 +39,6 @@ const LoginPage = () => {
       const data = await response.json();
       if (response.ok) {
         const abrigo = data.userData.abrigo
-        console.log('Login successful:', data);
         localStorage.setItem('token', data.token);
         localStorage.setItem('abrigo', abrigo);
         window.location.href = `/editar`
