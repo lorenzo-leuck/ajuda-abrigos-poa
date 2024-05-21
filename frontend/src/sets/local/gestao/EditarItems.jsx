@@ -31,6 +31,10 @@ const EditarItems = ({ itemType, abrigo }) => {
     try {
       await axios.patch(`${baseUrl}/api/${itemType}`, { [itemType]: newValue });
       setNewValue("");
+
+      await axios.patch(`${baseUrl}/api/demandas/${itemType}?abrigo=${abrigo}`, { demandas: newValue });
+
+
       await fetchData()
     } catch (error) {
       console.error("Failed to add item:", error);
