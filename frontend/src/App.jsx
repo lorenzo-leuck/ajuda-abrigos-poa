@@ -10,12 +10,14 @@ import Editar from "./sets/local/gestao/Editar";
 import LoginPage from "./sets/local/Login";
 import PrivateRoute from './components/PrivateRoute'; // Make sure to create this component
 import Abrigo from "./sets/local/publico/Abrigo";
-
+import Panorama from "./sets/geral/Panorama";
 
 const App = () => {
   return (
     <>
       <Routes>
+      <Route path="/" element={<Panorama />} />
+
         <Route path="/editar" element={
           <PrivateRoute>
             <Editar />
