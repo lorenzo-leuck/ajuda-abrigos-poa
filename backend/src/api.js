@@ -17,7 +17,7 @@ router.get('/abrigos', async (req, res) => {
   }
 });
 
-router.get('/abrigo', async (req, res) => {
+router.get('/abrigo/:nomeAbrigo', async (req, res) => {
   try {
     const { nomeAbrigo } = req.params;
     const abrigo = await Abrigos.findOne({'abrigo':nomeAbrigo}).lean();
