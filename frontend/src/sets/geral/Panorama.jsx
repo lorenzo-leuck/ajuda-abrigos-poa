@@ -24,6 +24,7 @@ const Panorama = () => {
 
   const handleClick = (item) => {
     localStorage.setItem('abrigo', item.abrigo);
+    localStorage.setItem('abrigoTitle', item.titulo);
     window.location.href = `/${item.abrigo}`
 
   };

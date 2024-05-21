@@ -32,7 +32,11 @@ const Navbar = ({ handlePageChange }) => {
       const location = window.location.pathname;
       const nomeAbrigo = location.split('/')[1];
       const response = await axios.get(`${baseUrl}/api/abrigo/${nomeAbrigo}`);
-      const abrigoTitle = response.data.message.titulo
+      const abrigoTitleData = response?.data?.message?.titulo
+      const abrigoTitleState = localStorage.getItem('abrigoTitle');
+      const abrigoTitle = abrigoTitleData || abrigoTitleState
+      console.log(abrigoTitleState);
+
       setAbrigoTitle(abrigoTitle)
     } catch (error) {
       console.log(error);

@@ -41,6 +41,7 @@ const LoginPage = () => {
         const abrigo = data.userData.abrigo
         localStorage.setItem('token', data.token);
         localStorage.setItem('abrigo', abrigo);
+        localStorage.setItem('abrigoTitle', abrigo);
         window.location.href = `/editar`
       } else {
         console.error('Login failed:', data.message);
