@@ -16,9 +16,8 @@ const Item = styled(Paper)(({ theme }) => ({
   width: 300,
 }));
 
-const AbrigoItems = ({ currentPage }) => {
+const AbrigoItems = ({ currentPage, nomeAbrigo }) => {
 
-  const abrigo = localStorage.getItem('abrigo')
   const [data, setData] = useState([]);
   const [lastUpdate, setLastUpdate] = useState(null);
 
@@ -35,7 +34,9 @@ const AbrigoItems = ({ currentPage }) => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`${baseUrl}/api/demandas/${currentPage}`);
+      const response = await axios.get(`${baseUrl}/api/demandas/${currentPage}?abrigo=${nomeAbrigo}`);
+      console.log(currentPage);
+      console.log(response);
       setData(response.data);
     } catch (error) {
       console.error(error);
@@ -44,7 +45,7 @@ const AbrigoItems = ({ currentPage }) => {
 
   const fetchDate = async () => {
     try {
-      const response = await axios.get(`${baseUrl}/api/demandasDate?abrigo=${abrigo}`);
+      const response = await axios.get(`${baseUrl}/api/demandasDate?abrigo=${nomeAbrigo}`);
       setLastUpdate(response.data);
     } catch (error) {
       console.error('Failed to fetch the last update date:', error);

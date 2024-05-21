@@ -5,6 +5,7 @@ import AbrigoItems from './AbrigoItems';
 
 const Abrigo = () => {
   const [currentPage, setCurrentPage] = useState('doacoes'); 
+  const abrigo = localStorage.getItem('abrigo')
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -14,7 +15,7 @@ const Abrigo = () => {
     <>
       <Navbar handlePageChange={handlePageChange} />
       <Toolbar />
-      <AbrigoItems currentPage={currentPage} />
+      <AbrigoItems currentPage={currentPage} nomeAbrigo={abrigo}/>
     </>
   );
 };
