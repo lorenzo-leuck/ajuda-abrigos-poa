@@ -51,7 +51,7 @@ const EditarItems = ({ itemType, abrigo }) => {
 
   const handleRemoveItem = async (item) => {
     try {
-      await axios.patch(`${baseUrl}/api/demandasRemove/${itemType}/remove?abrigo=${abrigo}`, { item });
+      await axios.patch(`${baseUrl}/api/demandasRemove/${itemType}?abrigo=${abrigo}`, { item });
       await fetchData()
     } catch (error) {
       console.error("Failed to remove item:", error);

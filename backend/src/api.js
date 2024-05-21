@@ -173,7 +173,7 @@ router.get('/demandasDate', async (req, res) => {
   }
 });
 
-router.patch('/demandasRemove/:type', async (req, res) => {
+router.patch('/demandasRemove/:itemType', async (req, res) => {
   try {
     const { itemType } = req.params; 
     const { item } = req.body;
