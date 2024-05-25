@@ -11,18 +11,27 @@ import LoginPage from "./sets/local/Login";
 import PrivateRoute from './components/PrivateRoute'; // Make sure to create this component
 import Abrigo from "./sets/local/publico/Abrigo";
 import Panorama from "./sets/geral/Panorama";
+import Admin from "./sets/admin/Admin";
 
 const App = () => {
   return (
     <>
       <Routes>
-      <Route path="/" element={<Panorama />} />
+        <Route path="/" element={<Panorama />} />
 
         <Route path="/editar" element={
           <PrivateRoute>
             <Editar />
           </PrivateRoute>
         } />
+
+
+        <Route path="/ademir" element={
+          <PrivateRoute>
+            <Admin />
+          </PrivateRoute>
+        } />
+
 
         <Route path="/login" element={<LoginPage />} />
         <Route path="/*" element={<Abrigo />} />
