@@ -8,7 +8,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import LoginIcon from '@mui/icons-material/Login';
 import { Link } from 'react-router-dom';
 import axios from "axios";
-import { baseUrl } from '../api';
+import { baseUrl, getUser } from '../api';
 import HomeIcon from '@mui/icons-material/Home';
 
 
@@ -25,13 +25,14 @@ const Navbar = ({ handlePageChange }) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [auth, setAuth] = useState(true);
   const [abrigoTitle, setAbrigoTitle] = useState("");
-
+  const [matchAbrigo, setMatchAbrigo] = useState(false);
+  const location = window.location.pathname;
+  const abrigoPath = location.split('/')[1];
 
   const getTitle = async (abrigo) => {
     try {
-      const location = window.location.pathname;
-      const nomeAbrigo = location.split('/')[1];
-      const response = await axios.get(`${baseUrl}/api/abrigo/${nomeAbrigo}`);
+
+      const response = await axios.get(`${baseUrl}/api/abrigo/${abrigoPath}`);
       const abrigoTitleData = response?.data?.message?.titulo
       const abrigoTitleState = localStorage.getItem('abrigoTitle');
       const abrigoTitle = abrigoTitleData || abrigoTitleState
@@ -43,8 +44,21 @@ const Navbar = ({ handlePageChange }) => {
     }
   }
 
+
+  const getMatchAbrigo = async () => {
+    if (token) {
+      const dados = await getUser()
+      const abrigoUser = dados.abrigo
+      if (abrigoUser === abrigoPath) {
+        setMatchAbrigo(true)
+      }
+    }
+  }
+
+
   useEffect(() => {
     getTitle()
+    getMatchAbrigo()
   }, []);
 
   const handleOpenNavMenu = (event) => {
@@ -91,10 +105,10 @@ const Navbar = ({ handlePageChange }) => {
 
 
 
-              
+
               <MenuIcon />
             </IconButton>
-            
+
             <Menu
               id="menu-nav"
               anchorEl={anchorElNav}
@@ -118,8 +132,8 @@ const Navbar = ({ handlePageChange }) => {
 
           <Typography variant="h6" sx={{ flexGrow: 1, textAlign: 'center', fontFamily: 'Roboto' }}>
 
-          <IconButton onClick={() => { window.location.href = '/'; }} sx={{ p: 0, mr:2,}} color="inherit">
-              <HomeIcon fontSize="small"/>
+            <IconButton onClick={() => { window.location.href = '/'; }} sx={{ p: 0, mr: 2, }} color="inherit">
+              <HomeIcon fontSize="small" />
             </IconButton>
 
 
@@ -129,7 +143,7 @@ const Navbar = ({ handlePageChange }) => {
 
 
 
-          {token ? (
+          {matchAbrigo ? (
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Account settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }} color="inherit">

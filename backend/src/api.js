@@ -2,11 +2,11 @@ const express = require('express');
 const router = express.Router();
 const { Usuarios, Doacoes, Demandas, Voluntarios, Abrigos } = require('./model');
 const jwt = require('jsonwebtoken');
-
+const { toHex } = require('./auth');
 
 router.get('/abrigos', async (req, res) => {
   try {
-    const abrigos = await Abrigos.find({}, { '_id': 0, 'abrigo': 1, 'titulo':1 }).lean();
+    const abrigos = await Abrigos.find({}, { '_id': 0, 'abrigo': 1, 'titulo': 1 }).lean();
 
 
     res.status(200).json({ message: abrigos });
@@ -20,7 +20,7 @@ router.get('/abrigos', async (req, res) => {
 router.get('/abrigo/:nomeAbrigo', async (req, res) => {
   try {
     const { nomeAbrigo } = req.params;
-    const abrigo = await Abrigos.findOne({'abrigo':nomeAbrigo}).lean();
+    const abrigo = await Abrigos.findOne({ 'abrigo': nomeAbrigo }).lean();
     res.status(200).json({ message: abrigo });
 
   } catch (err) {
@@ -175,7 +175,7 @@ router.get('/demandasDate', async (req, res) => {
 
 router.patch('/demandasRemove/:itemType', async (req, res) => {
   try {
-    const { itemType } = req.params; 
+    const { itemType } = req.params;
     const { item } = req.body;
     const { abrigo } = req.query;
 
@@ -219,9 +219,9 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
 
-    const token = jwt.sign({ userId: userData._id }, process.env.AUTH_KEY);
+    const token = toHex(userData._id, process.env.AUTH_KEY)
 
-    console.log("Login successful:", token);
+    console.log("Login successful");
     res.status(200).json({ message: 'Login successful', userData, token });
   } catch (err) {
     console.error(err);
@@ -229,7 +229,19 @@ router.post('/login', async (req, res) => {
   }
 });
 
+router.post('/user', async (req, res) => {
+  const { id } = req.body;
 
+  try {
+    const userData = await Usuarios.findById(id, { '_id': 0, 'username':1,'abrigo': 1 })
+
+    console.log("Login successful");
+    res.status(200).json(userData);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'An error occurred during login' });
+  }
+});
 
 
 
