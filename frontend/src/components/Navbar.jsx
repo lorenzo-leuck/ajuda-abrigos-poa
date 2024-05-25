@@ -49,7 +49,7 @@ const Navbar = ({ handlePageChange }) => {
     if (token) {
       const dados = await getUser()
       const abrigoUser = dados.abrigo
-      if (abrigoUser === abrigoPath) {
+      if (abrigoUser != 'ademir' && abrigoUser === abrigoPath) {
         setMatchAbrigo(true)
       }
     }
