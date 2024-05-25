@@ -26,6 +26,7 @@ const Doacoes = mongoose.model('doacoes', DoacoesSchema);
 const DemandasSchema = new mongoose.Schema({
   abrigo: String,
   doacoes: Schema.Types.Mixed,
+  nao_aceitamos: Schema.Types.Mixed,
   voluntarios: Schema.Types.Mixed,
   date: { type: Date, default: Date.now }
 });

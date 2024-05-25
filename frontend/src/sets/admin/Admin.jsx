@@ -1,43 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Typography, Box, RadioGroup, Radio, FormControlLabel, TextField, IconButton, Button, Container } from "@mui/material";
-import { Toolbar } from '@mui/material';
-
-import SendIcon from "@mui/icons-material/Send";
-import CloseIcon from "@mui/icons-material/Close";
+import { Typography, Box, TextField, Button, Container } from "@mui/material";
+import { Toolbar } from "@mui/material";
 import axios from "axios";
 import Navbar from "../../components/Navbar";
-import { baseUrl, getUser } from "../../api";
-
+import { baseUrl } from "../../api";
 
 const Admin = () => {
-//   const abrigo = localStorage.getItem('abrigo')
-  const [selectedOption, setSelectedOption] = useState("doacoes");
-  const [newValue, setNewValue] = useState("");
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [abrigo, setAbrigo] = useState('');
 
-
-  const fetchData = async () => {
-    try {
-    //   const itemsResponse = await axios.get(`${baseUrl}/api/${itemType}`);
-    //   setItems(itemsResponse.data.message);
-    //   const demandasResponse = await axios.get(`${baseUrl}/api/demandas/${itemType}?abrigo=${abrigo}`);
-    //   setDemandas(demandasResponse.data);
-
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-
-  useEffect(() => {
-    fetchData();
-  }, []); 
-
-
   const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log('Form submission triggered');
 
     const signupData = {
       username,
@@ -45,33 +20,26 @@ const Admin = () => {
       abrigo,
     };
 
-    try {
-      const response = await axios.post('/api/signup', signupData);
-      console.log(response.data);
-    } catch (error) {
-      console.error('There was an error signing up!', error);
+    if (username && password && abrigo) {  
+      try {
+        const response = await axios.post(`${baseUrl}/api/user`, signupData);
+        console.log(response.data);
+      } catch (error) {
+        console.error('There was an error signing up!', error);
+      }
+    } else {
+      console.error('Please fill in all fields');
     }
   };
-
-
-  const handleRemoveItem = async (item) => {
-    try {
-    //   await axios.patch(`${baseUrl}/api/demandasRemove/${itemType}?abrigo=${abrigo}`, { item });
-    //   await fetchData()
-    } catch (error) {
-      console.error("Failed to remove item:", error);
-    }
-  };
-
-
 
   const handlePageChange = (page) => {
-    window.location.href = `/`
+    window.location.href = `/`;
   };
+
   return (
     <Container component="main" maxWidth="xs">
-          <Navbar handlePageChange={handlePageChange} />
-        <Toolbar />
+      <Navbar handlePageChange={handlePageChange} />
+      <Toolbar />
       <Box
         sx={{
           marginTop: 8,
@@ -83,7 +51,7 @@ const Admin = () => {
         <Typography component="h1" variant="h5">
           Admin
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <form onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -130,7 +98,7 @@ const Admin = () => {
           >
             Cadastrar
           </Button>
-        </Box>
+        </form>
       </Box>
     </Container>
   );

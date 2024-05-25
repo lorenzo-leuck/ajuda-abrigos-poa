@@ -230,13 +230,38 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/user', async (req, res) => {
-  const { id } = req.body;
+  const userData = req.body;
 
   try {
-    const userData = await Usuarios.findById(id, { '_id': 0, 'username':1,'abrigo': 1 })
 
-    console.log("Login successful");
-    res.status(200).json(userData);
+
+    const abrigoData = {
+      titulo: userData.abrigo,
+      abrigo: userData.abrigo,
+      endereco: "",
+      contato: "",
+      info: ""
+    }
+
+    const demandaData = {
+      abrigo: userData.abrigo,
+      doacoes: [],
+      voluntarios: [],
+      nao_aceitamos: [],
+      date: new Date()
+    }
+
+if (userData.username) {
+  await Usuarios.create(userData)
+  await Abrigos.create(abrigoData)
+  await Demandas.create(demandaData)
+
+  console.log("Succefully created user data");
+}
+
+
+
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'An error occurred during login' });
