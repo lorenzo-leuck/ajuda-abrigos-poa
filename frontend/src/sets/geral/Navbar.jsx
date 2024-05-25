@@ -24,7 +24,7 @@ const Navbar = () => {
 
 
           <Typography variant="h6" sx={{ flexGrow: 1, textAlign: 'center', fontFamily: 'Roboto' }}>
-            ajuda abrigos poa
+            ajuda abrigos poa !
           </Typography>
 
         </Toolbar>
