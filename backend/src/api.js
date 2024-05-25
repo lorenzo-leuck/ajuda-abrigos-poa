@@ -251,22 +251,61 @@ router.post('/user', async (req, res) => {
       date: new Date()
     }
 
-if (userData.username) {
-  await Usuarios.create(userData)
-  await Abrigos.create(abrigoData)
-  await Demandas.create(demandaData)
+    if (userData.username) {
+      await Usuarios.create(userData)
+      await Abrigos.create(abrigoData)
+      await Demandas.create(demandaData)
 
-  console.log("Succefully created user data");
-}
-
-
-
+      console.log("Succefully created user data");
+    }
 
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'An error occurred during login' });
   }
 });
+
+
+
+router.get('/users', async (req, res) => {
+  try {
+    const users = await Usuarios.find({}, { '_id': 0, 'username': 1 }).lean();
+
+    const labelValues = users.map(user => user.username);
+
+    res.status(200).json({ message: labelValues });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+router.delete('/user', async (req, res) => {
+  const { item } = req.query;
+  try {
+    if (item) {
+      const userResult = await Usuarios.deleteOne({ username:item });
+      const abrigoResult = await Abrigos.deleteOne({ abrigo: item });
+      const demandaResult = await Demandas.deleteOne({ abrigo: item });
+
+      if (userResult.deletedCount === 1 ) {
+        console.log("Successfully deleted user data");
+        res.status(200).json({ message: 'Successfully deleted user data' });
+      } else {
+        res.status(404).json({ message: 'User data not found' });
+      }
+    } else {
+      res.status(400).json({ message: 'Invalid input data' });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'An error occurred during deletion' });
+  }
+});
+
+
 
 
 

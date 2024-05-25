@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Typography, Box, TextField, Button, Container } from "@mui/material";
+import { Typography, Box, TextField, Button,IconButton, Container } from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
+import CloseIcon from "@mui/icons-material/Close";
 import { Toolbar } from "@mui/material";
 import axios from "axios";
 import Navbar from "../../components/Navbar";
@@ -9,6 +11,32 @@ const Admin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [abrigo, setAbrigo] = useState('');
+  const [items, setItems] = useState([]);
+
+const fetchData = async() => {
+    try {
+        const data = await axios.get(`${baseUrl}/api/users`)
+        setItems(data.data.message);
+    } catch (error) {
+        console.error("Error fetching data:", error);
+    }
+}
+
+const handleRemoveItem = async (item) => {
+    try {
+        console.log("1");
+      await axios.delete(`${baseUrl}/api/user?item=${item}`);
+    console.log(item);  
+    await fetchData()
+    } catch (error) {
+      console.error("Failed to remove item:", error);
+    }
+  };
+
+useEffect(() => {
+    fetchData()
+}, []);
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -49,7 +77,7 @@ const Admin = () => {
         }}
       >
         <Typography component="h1" variant="h5">
-          Admin
+          Create
         </Typography>
         <form onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <TextField
@@ -99,6 +127,25 @@ const Admin = () => {
             Cadastrar
           </Button>
         </form>
+<br/>
+        <Typography component="h1" variant="h5">
+            Remove
+        </Typography>
+
+        <Box p={3}>
+        {items.map((item, index) => (
+          <Box key={index} display="flex" alignItems="center">
+            <IconButton onClick={() => handleRemoveItem(item)} color="error">
+              <CloseIcon />
+            </IconButton>
+            <div style={{ fontFamily: "Roboto", margin: 5 }}>{item}</div>
+          </Box>
+        ))}
+
+</Box>
+
+
+
       </Box>
     </Container>
   );
