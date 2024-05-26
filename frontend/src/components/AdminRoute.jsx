@@ -5,7 +5,7 @@ import { getUser } from '../api';
 const AdminRoute = ({ children }) => {
   const admin = localStorage.getItem('admin');
 
-  return admin === true ? children : <Navigate to="/login" replace />;
+  return (admin === 'true') ? children : <Navigate to="/login" replace />;
 };
 
 export default AdminRoute

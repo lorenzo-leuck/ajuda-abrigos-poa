@@ -4,13 +4,15 @@ import {
   Tooltip, FormGroup, FormControlLabel, Switch, Avatar
 } from '@mui/material';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-const admin = localStorage.getItem('admin');
 
 const Navbar = () => {
   const [matchAbrigo, setMatchAbrigo] = useState(false);
 
   const getMatchAbrigo = async () => {
-    if (admin === true) {
+    const admin = localStorage.getItem('admin');
+    console.log(admin);
+    if (admin === 'true') {
+      console.log("object");
         setMatchAbrigo(true)
     }
   }

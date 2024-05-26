@@ -53,7 +53,7 @@ const Navbar = ({ handlePageChange }) => {
 
 console.log(admin || abrigoUser === abrigoPath);
 
-      if (admin === true || (abrigoUser === abrigoPath)) {
+      if (admin === 'true' || (abrigoUser === abrigoPath)) {
         console.log("condicao asdasd");
         setMatchAbrigo(true)
       }
