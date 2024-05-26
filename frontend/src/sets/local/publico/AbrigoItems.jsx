@@ -60,10 +60,25 @@ const AbrigoItems = ({ currentPage, nomeAbrigo }) => {
     color: 'gray',
   };
 
+
+  function translate(leftValue) {
+    switch (leftValue) {
+      case 'voluntarios':
+        return 'Voluntários';
+      case 'doacoes':
+        return 'Doações';
+      case 'nao_aceitamos':
+        return 'Não aceitamos';
+      default:
+        return 'Unknown value';
+    }
+  }
+
+
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
       <Typography variant="h4" p={3} fontWeight={200} style={typoStyle}>
-        Demanda {currentPage === 'voluntarios' ? 'Voluntários' : 'Doações'}
+      {translate(currentPage)}
       </Typography>
       <Typography variant="body1" marginBottom={2} fontWeight={100} style={typoStyle}>
         Atualizado em {lastUpdate ? formatBrazilianDate(lastUpdate) : ""}

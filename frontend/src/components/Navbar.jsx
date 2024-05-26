@@ -14,7 +14,7 @@ import HomeIcon from '@mui/icons-material/Home';
 
 const token = localStorage.getItem('token');
 
-const pages = ['doacoes', 'voluntarios'];
+const pages = ['doacoes', 'voluntarios', 'nao_aceitamos'];
 
 const settings = ['Editar', 'Sair'];
 const settingsRoutes = ['/editar', '/login'];
@@ -51,7 +51,6 @@ const Navbar = ({ handlePageChange }) => {
       const dados = await getUser()
       const abrigoUser = dados.abrigo
 
-console.log(admin || abrigoUser === abrigoPath);
 
       if (admin === 'true' || (abrigoUser === abrigoPath)) {
         console.log("condicao asdasd");

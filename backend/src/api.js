@@ -46,6 +46,20 @@ router.get('/doacoes', async (req, res) => {
 });
 
 
+router.get('/nao_aceitamos', async (req, res) => {
+  try {
+    const doacoes = await Doacoes.find({}, { '_id': 0, 'label': 1 }).lean();
+
+    const labelValues = doacoes.map(doacao => doacao.label);
+
+    res.status(200).json({ message: labelValues });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
 
 router.get('/voluntarios', async (req, res) => {
   try {
@@ -91,12 +105,26 @@ router.patch('/doacoes', async (req, res) => {
   }
 });
 
+router.patch('/nao_aceitamos', async (req, res) => {
+  try {
+    const { doacoes } = req.body
+
+    await Doacoes.create({ "label": doacoes, "categoria": "Etc" })
+    console.log("updated doacoes");
+    res.status(200).json({ message: "updated doacoes" });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
 
 router.get('/demandas/:itemType', async (req, res) => {
   const type = req.params.itemType;
   const { abrigo } = req.query;
   console.log(abrigo);
-  if (!['doacoes', 'voluntarios'].includes(type)) {
+  if (!['doacoes', 'voluntarios', 'nao_aceitamos'].includes(type)) {
     return res.status(400).json({ message: "Invalid path parameter. Use 'doacoes' or 'voluntarios'." });
   }
 
@@ -126,7 +154,7 @@ router.patch('/demandas/:itemType', async (req, res) => {
     const { demandas } = req.body;
     const { abrigo } = req.query;
 
-    if (!['voluntarios', 'doacoes'].includes(itemType)) {
+    if (!['voluntarios', 'doacoes', 'nao_aceitamos'].includes(itemType)) {
       return res.status(400).json({ message: "Invalid type specified. Use 'voluntarios' or 'doacoes'." });
     }
 
@@ -181,7 +209,7 @@ router.patch('/demandasRemove/:itemType', async (req, res) => {
 
     const currentDate = new Date();
 
-    if (!['doacoes', 'voluntarios'].includes(itemType)) {
+    if (!['doacoes', 'voluntarios', 'nao_aceitamos'].includes(itemType)) {
       return res.status(400).json({ message: "Invalid type specified. Use 'doacoes' or 'voluntarios'." });
     }
 

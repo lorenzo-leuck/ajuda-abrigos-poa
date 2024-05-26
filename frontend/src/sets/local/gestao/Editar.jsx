@@ -32,6 +32,7 @@ const Editar = () => {
         >
           <FormControlLabel value="doacoes" control={<Radio />} label="Doações" />
           <FormControlLabel value="voluntarios" control={<Radio />} label="Voluntários" />
+          <FormControlLabel value="nao_aceitamos" control={<Radio />} label="Não aceitamos" />
         </RadioGroup>
       </Box>
       <EditarItems
