@@ -134,7 +134,7 @@ const Navbar = ({ handlePageChange }) => {
 
 
 
-          <Typography variant="h6" sx={{ flexGrow: 1, textAlign: 'center', fontFamily: 'Roboto' }}>
+          <Typography variant="h7" sx={{ flexGrow: 1, textAlign: 'center', fontFamily: 'Roboto' }}>
 
             <IconButton onClick={() => { window.location.href = '/'; }} sx={{ p: 0, mr: 2, }} color="inherit">
               <HomeIcon fontSize="small" />

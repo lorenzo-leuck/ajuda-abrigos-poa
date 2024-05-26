@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { Usuarios, Doacoes, Demandas, Voluntarios, Abrigos } = require('./model');
 const jwt = require('jsonwebtoken');
-const { toHex } = require('./auth');
+const { toHex, fromHex } = require('./auth');
 
 router.get('/abrigos', async (req, res) => {
   try {
@@ -259,7 +259,10 @@ router.post('/login', async (req, res) => {
 
 
 router.post('/userData', async (req, res) => {
-  const { id } = req.body;
+  const { token } = req.body;
+
+  const id = fromHex(token, process.env.AUTH_KEY);
+
 
   try {
     const userData = await Usuarios.findById(id, { '_id': 0, 'username':1,'abrigo': 1 })

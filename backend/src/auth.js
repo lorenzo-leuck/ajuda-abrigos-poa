@@ -37,3 +37,23 @@ exports.toHex = (obj, password) => {
 
 
 
+exports.fromHex = (hex, password) => {
+  if (typeof hex !== 'string') {
+    return null;
+  }
+
+  try {
+    const bytes = new Uint8Array(hex.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+
+    const decryptedData = xorEncryptDecrypt(bytes, password);
+
+
+    const decoder = new TextDecoder();
+    const decodedString = decoder.decode(decryptedData);
+
+    return decodedString
+  } catch (error) {
+    console.error('Could not decode the string:', error);
+    return null;
+  }
+};
