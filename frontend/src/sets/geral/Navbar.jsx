@@ -3,32 +3,15 @@ import {
   AppBar, Toolbar, Typography, Box, Container, IconButton, Menu, MenuItem,
   Tooltip, FormGroup, FormControlLabel, Switch, Avatar
 } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import LoginIcon from '@mui/icons-material/Login';
-import { Link } from 'react-router-dom';
-const token = localStorage.getItem('token');
-
-import axios from "axios";
-import { baseUrl, getUser } from '../../api';
-const pages = ['doacoes', 'voluntarios'];
-
-const settings = ['Editar', 'Sair'];
-const settingsRoutes = ['/editar', '/login'];
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+const admin = localStorage.getItem('admin');
 
 const Navbar = () => {
   const [matchAbrigo, setMatchAbrigo] = useState(false);
 
   const getMatchAbrigo = async () => {
-    if (token) {
-      console.log("pimba");
-      const dados = await getUser()
-      const abrigoUser = dados.abrigo
-      console.log(dados);
-      if (abrigoUser === 'ademir') {
-        console.log("oi");
+    if (admin === true) {
         setMatchAbrigo(true)
-      }
     }
   }
 
@@ -47,6 +30,18 @@ useEffect(() => {
           <Typography variant="h6" sx={{ flexGrow: 1, textAlign: 'center', fontFamily: 'Roboto' }}>
             ajuda abrigos poa !
           </Typography>
+
+
+          {matchAbrigo ? (
+
+<IconButton onClick={() => { window.location.href = '/ademir'; }} sx={{ p: 0 }} color="inherit">
+<ManageAccountsIcon />
+</IconButton>
+
+
+          ): <></>}
+
+
 
         </Toolbar>
       </Container>

@@ -8,10 +8,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 // import Panorama from "./pages/local/publico/Panorama";
 import Editar from "./sets/local/gestao/Editar";
 import LoginPage from "./sets/local/Login";
-import PrivateRoute from './components/PrivateRoute'; // Make sure to create this component
+import PrivateRoute from './components/PrivateRoute'; 
 import Abrigo from "./sets/local/publico/Abrigo";
 import Panorama from "./sets/geral/Panorama";
 import Admin from "./sets/admin/Admin";
+import AdminRoute from "./components/AdminRoute";
 
 const App = () => {
   return (
@@ -27,9 +28,9 @@ const App = () => {
 
 
         <Route path="/ademir" element={
-          <PrivateRoute>
+          <AdminRoute>
             <Admin />
-          </PrivateRoute>
+          </AdminRoute>
         } />
 
 

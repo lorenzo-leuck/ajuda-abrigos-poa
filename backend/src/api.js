@@ -229,6 +229,21 @@ router.post('/login', async (req, res) => {
   }
 });
 
+
+router.post('/userData', async (req, res) => {
+  const { id } = req.body;
+
+  try {
+    const userData = await Usuarios.findById(id, { '_id': 0, 'username':1,'abrigo': 1 })
+
+    console.log("Login successful");
+    res.status(200).json(userData);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'An error occurred during login' });
+  }
+});
+
 router.post('/user', async (req, res) => {
   const userData = req.body;
 

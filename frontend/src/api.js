@@ -44,13 +44,11 @@ const fromHex = (hex, password) => {
   }
 };
 const getUser = async () => {
-  console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaa");
   const token = localStorage.getItem('token');
   const id = fromHex(token, authKey);
 
-  const userRes = await axios.post(`${baseUrl}/api/user`, { id })
+  const userRes = await axios.post(`${baseUrl}/api/userData`, { id })
   const userData = userRes.data
-console.log(userData);
   return userData
 };
 

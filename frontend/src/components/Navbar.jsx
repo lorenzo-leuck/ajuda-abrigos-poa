@@ -36,7 +36,6 @@ const Navbar = ({ handlePageChange }) => {
       const abrigoTitleData = response?.data?.message?.titulo
       const abrigoTitleState = localStorage.getItem('abrigoTitle');
       const abrigoTitle = abrigoTitleData || abrigoTitleState
-      console.log(abrigoTitleState);
 
       setAbrigoTitle(abrigoTitle)
     } catch (error) {
@@ -46,10 +45,16 @@ const Navbar = ({ handlePageChange }) => {
 
 
   const getMatchAbrigo = async () => {
+    const admin = localStorage.getItem('admin');
+
     if (token) {
       const dados = await getUser()
       const abrigoUser = dados.abrigo
-      if (abrigoUser != 'ademir' && abrigoUser === abrigoPath) {
+
+console.log(admin || abrigoUser === abrigoPath);
+
+      if (admin === true || (abrigoUser === abrigoPath)) {
+        console.log("condicao asdasd");
         setMatchAbrigo(true)
       }
     }
