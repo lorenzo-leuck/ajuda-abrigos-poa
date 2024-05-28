@@ -7,7 +7,7 @@ const cors = require('cors');
 const dotenv = require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 const app = express();
-const port = 1339;
+const port = 80;
 
 app.use(bodyParser.json());
 
