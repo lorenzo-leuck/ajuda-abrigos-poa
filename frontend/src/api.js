@@ -6,7 +6,7 @@ import axios from 'axios'
 
 let baseUrl;
 if (projectEnvironment === 'production') {
-  baseUrl = 'https://ajudaabrigospoa.com.br:1339';
+  baseUrl = 'http://ajudaabrigospoa.com.br:1339';
 } else {
   baseUrl = 'http://localhost:1339';
 }

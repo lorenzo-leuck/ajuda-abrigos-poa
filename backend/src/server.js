@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 app.use(cors({
   origin: [
     'http://localhost:5174',   
-    'https://ajudaabrigospoa.com.br'   
+    'http://ajudaabrigospoa.com.br'   
   ]
 }));
 
