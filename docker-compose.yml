@@ -20,7 +20,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "1339:1339"
     networks:
       - mynetwork
 

@@ -13,7 +13,7 @@ COPY . .
 
 COPY .env .env
 
-EXPOSE 1339 80
+EXPOSE 1339
 
 CMD [ "node", "src/server.js" ]
 
