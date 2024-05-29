@@ -21,8 +21,8 @@ services:
     image: nginx:alpine
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
-      - /etc/letsencrypt/archive/ajudaabrigospoa.com.br/fullchain.pem:/etc/ssl/certs/fullchain.pem
-      - /etc/letsencrypt/archive/ajudaabrigospoa.com.br/privkey.pem:/etc/ssl/private/privkey.pem
+      - /home/ec2-user/fullchain.pem:/etc/ssl/certs/fullchain.pem
+      - /home/ec2-user/privkey.pem:/etc/ssl/private/privkey.pem
     ports:
       - "80:80"
       - "443:443"
