@@ -5,39 +5,26 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
     volumes:
-      - node_modules:/app/node_modules
+    - node_modules:/app/node_modules
     networks:
-      - mynetwork
+    - mynetwork
 
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    networks:
-      - mynetwork
-
-  nginx:
-    image: nginx:alpine
-    entrypoint: /bin/sh -c "/usr/local/bin/entrypoint.sh && nginx -g 'daemon off;'"
     ports:
-      - "80:80"
-      - "443:443"
-    depends_on:
-      - frontend
-      - backend
-    volumes:
-      - node_modules:/app/node_modules
-      - ./nginx.conf:/etc/nginx/nginx.conf
-      - certs:/etc/ssl
+      - "1339:1339"
     networks:
       - mynetwork
 
 networks:
   mynetwork:
     driver: bridge
-
 volumes:
   node_modules: {}
-  certs:
-    external: true
