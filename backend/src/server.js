@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 // Configure CORS
 app.use(
   cors({
-    origin: ["http://localhost:5174", "http://ajudaabrigospoa.com.br"],
+    origin: ["http://localhost:5174", "http://ajudaabrigospoa.com.br","https://ajudaabrigospoa.com.br"],
   }),
 );
 
