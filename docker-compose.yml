@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   frontend:
@@ -10,18 +10,31 @@ services:
     depends_on:
       - backend
     volumes:
-    - node_modules:/app/node_modules
+      - node_modules:/app/node_modules
     networks:
-    - mynetwork
+      - mynetwork
 
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
+      target: development
     ports:
       - "1339:1339"
     networks:
       - mynetwork
+
+  production:
+    build:
+      context: ./
+      dockerfile: ./backend/Dockerfile
+      target: production
+    ports:
+      - "8080:1339"
+    networks:
+      - mynetwork
+    env_file:
+      - ./backend/.env
 
 networks:
   mynetwork:
