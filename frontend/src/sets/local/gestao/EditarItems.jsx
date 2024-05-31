@@ -58,14 +58,24 @@ const EditarItems = ({ itemType, abrigo }) => {
     }
   };
 
+  const handleChange = (e) => {
+    const value = e.target.value;
+
+    const regex = /^[^\s][a-zA-Z0-9\s]*$/;
+
+    if (value === '' || regex.test(value)) {
+      setNewValue(value);
+    }
+  };
+
   return (
     <Box p={3}>
-      <TextField
-        value={newValue}
-        onChange={(e) => setNewValue(e.target.value)}
-        placeholder={`Adicionar ${itemType}`}
-        sx={{ width: 300, marginRight: 1, marginBottom: 3 }}
-      />
+    <TextField
+      value={newValue}
+      onChange={handleChange}
+      placeholder={`Adicionar ${itemType}`}
+      sx={{ width: 300, marginRight: 1, marginBottom: 3 }}
+    />
       <IconButton variant="contained" onClick={handleAddItem}>
         <SendIcon />
       </IconButton>
