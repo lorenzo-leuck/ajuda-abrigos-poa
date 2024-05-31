@@ -10,12 +10,12 @@ on:
       - "main"
 
 env:
-  SSH_PRIVATE_KEY: '${{ secrets.AJUDAABRIGOSPOA_SSH_KEY }}'
+  SSH_PRIVATE_KEY: ${{ secrets.AJUDAABRIGOSPOA_SSH_KEY }}
 
 jobs:
   deploy:
     environment: AJUDAABRIGOSPOA_SSH_KEY
-    runs-on: ubuntu-latest
+    runs-on: amazonlinux-2
 
     steps:
       - name: Checkout repository
