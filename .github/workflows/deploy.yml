@@ -1,0 +1,40 @@
+name: Deploy to Production
+
+on:
+  pull_request:
+    types: ["closed"]
+    branches:
+      - main
+  push:
+    branches:
+      - "main"
+
+env:
+  SSH_PRIVATE_KEY: ${{ secrets.AJUDAABRIGOSPOA_SSH_KEY }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Deploy to Production
+        run: |
+          echo "$SSH_PRIVATE_KEY"
+          # Set up user configuration
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "GitHub Actions"
+          # Add the SSH key to the workflow, which will be used to access AWS
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          # Verify Key Existence
+          ssh-keyscan -H ec2-user@ec2-3-15-86-22.us-east-2.compute.amazonaws.com >> ~/.ssh/known_hosts
+          # Add the remotes and push to production
+          git remote add app ec2-user@ec2-3-15-86-22.us-east-2.compute.amazonaws.com:/home/ec2-user/ajudaabrigospoa.git/
+          # Push the reference branch to the production branch
+          git push app "${{ github.ref }}:update"
