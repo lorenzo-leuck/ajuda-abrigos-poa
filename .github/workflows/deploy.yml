@@ -14,7 +14,6 @@ env:
 
 jobs:
   deploy:
-    environment: AJUDAABRIGOSPOA_SSH_KEY
     runs-on: amazonlinux-2
 
     steps:
