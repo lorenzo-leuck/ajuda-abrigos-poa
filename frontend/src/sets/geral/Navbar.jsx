@@ -30,7 +30,7 @@ useEffect(() => {
 
 
           <Typography variant="h6" sx={{ flexGrow: 1, textAlign: 'center', fontFamily: 'Roboto' }}>
-            Ajuda Abrigos Poa !!!!!
+            Ajuda Abrigos Poa !!!!!!
           </Typography>
 
 
