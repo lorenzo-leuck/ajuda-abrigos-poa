@@ -14,7 +14,7 @@ env:
 
 jobs:
   deploy:
-    runs-on: amazonlinux-2
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
