@@ -5,7 +5,8 @@ import AbrigoItems from './AbrigoItems';
 
 const Abrigo = () => {
   const [currentPage, setCurrentPage] = useState('doacoes'); 
-  const abrigo = localStorage.getItem('abrigo')
+  const location = window.location.pathname;
+  const abrigo = location.split('/')[1];
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
