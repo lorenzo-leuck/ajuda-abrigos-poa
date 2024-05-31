@@ -7,6 +7,7 @@ const Abrigo = () => {
   const [currentPage, setCurrentPage] = useState('doacoes'); 
   const location = window.location.pathname;
   const abrigo = location.split('/')[1];
+  localStorage.setItem('abrigo', abrigo);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);

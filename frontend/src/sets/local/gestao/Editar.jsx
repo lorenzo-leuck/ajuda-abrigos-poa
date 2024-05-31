@@ -5,8 +5,7 @@ import { Toolbar } from '@mui/material';
 import Navbar from '../../../components/Navbar';
 
 const Editar = () => {
-  const location = window.location.pathname;
-  const abrigo = location.split('/')[1];
+  const abrigo = localStorage.getItem('abrigo')
   const [selectedOption, setSelectedOption] = useState("doacoes");
 
   const handlePageChange = (page) => {
