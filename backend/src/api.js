@@ -123,7 +123,6 @@ router.patch('/nao_aceitamos', async (req, res) => {
 router.get('/demandas/:itemType', async (req, res) => {
   const type = req.params.itemType;
   const { abrigo } = req.query;
-  console.log(abrigo);
   if (!['doacoes', 'voluntarios', 'nao_aceitamos'].includes(type)) {
     return res.status(400).json({ message: "Invalid path parameter. Use 'doacoes' or 'voluntarios'." });
   }
@@ -159,7 +158,6 @@ router.patch('/demandas/:itemType', async (req, res) => {
     }
 
     const currentDate = new Date();
-    console.log(currentDate);
 
     const updateOperation = {
       $push: { [itemType]: demandas },

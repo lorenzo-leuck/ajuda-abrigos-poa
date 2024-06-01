@@ -97,7 +97,7 @@ const Navbar = ({ handlePageChange }) => {
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
 
 
-            <IconButton
+            {/* <IconButton
               size="large"
               aria-label="menu"
               aria-controls="menu-appbar"
@@ -110,7 +110,7 @@ const Navbar = ({ handlePageChange }) => {
 
 
               <MenuIcon />
-            </IconButton>
+            </IconButton> */}
 
             <Menu
               id="menu-nav"

@@ -17,7 +17,7 @@ const Abrigo = () => {
     <>
       <Navbar handlePageChange={handlePageChange} />
       <Toolbar />
-      <AbrigoItems currentPage={currentPage} nomeAbrigo={abrigo}/>
+      <AbrigoItems nomeAbrigo={abrigo}/>
     </>
   );
 };

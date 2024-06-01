@@ -16,10 +16,13 @@ const Item = styled(Paper)(({ theme }) => ({
   width: 300,
 }));
 
-const AbrigoItems = ({ currentPage, nomeAbrigo }) => {
+const AbrigoItems = ({ nomeAbrigo }) => {
 
-  const [data, setData] = useState([]);
-  const [lastUpdate, setLastUpdate] = useState(null);
+  const [doacoes, setDoacoes] = useState([]);
+  const [voluntarios, setVoluntarios] = useState([]);
+  const [naoAceitamos, setNaoAceitamos] = useState([]);
+  const [info, setInfo] = useState("");
+    const [lastUpdate, setLastUpdate] = useState(null);
 
   const formatBrazilianDate = (dateString) => {
     const date = new Date(dateString);
@@ -34,8 +37,18 @@ const AbrigoItems = ({ currentPage, nomeAbrigo }) => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`${baseUrl}/api/demandas/${currentPage}?abrigo=${nomeAbrigo}`);
-      setData(response.data);
+      const responses = await Promise.all([
+        axios.get(`${baseUrl}/api/demandas/doacoes?abrigo=${nomeAbrigo}`),
+        axios.get(`${baseUrl}/api/demandas/voluntarios?abrigo=${nomeAbrigo}`),
+        axios.get(`${baseUrl}/api/demandas/nao_aceitamos?abrigo=${nomeAbrigo}`),
+        axios.get(`${baseUrl}/api/demandas/nao_aceitamos?abrigo=${nomeAbrigo}`),
+      ]);
+
+      setDoacoes(responses[0].data)
+      setVoluntarios(responses[1].data)
+      setNaoAceitamos(responses[2].data)
+      setInfo(responses[3].data)
+
     } catch (error) {
       console.error(error);
     }
@@ -53,43 +66,51 @@ const AbrigoItems = ({ currentPage, nomeAbrigo }) => {
   useEffect(() => {
     fetchData();
     fetchDate();
-  }, [currentPage]);
+  }, []);
 
   const typoStyle = {
     fontFamily: 'Ubuntu, sans-serif',
-    color: 'gray',
+    color: 'black',
+    margin: '25px 0px -10px 0px',
   };
 
 
-  function translate(leftValue) {
-    switch (leftValue) {
-      case 'voluntarios':
-        return 'Voluntários';
-      case 'doacoes':
-        return 'Doações';
-      case 'nao_aceitamos':
-        return 'Não aceitamos';
-      default:
-        return 'Unknown value';
+  const renderContent = (title, data) => {
+
+    if (data.length === 0) {
+      return null;
     }
-  }
+
+    return (
+      <>
+        <Typography variant="h4" p={3} fontWeight={200} style={typoStyle}>
+          {title}
+        </Typography>
+        <Box display="flex" flexDirection="column" alignItems="center">
+          {data.map((item, index) => (
+            <Item key={index}>
+              {item}
+            </Item>
+          ))}
+        </Box>
+      </>
+    );
+  };
 
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
-      <Typography variant="h4" p={3} fontWeight={200} style={typoStyle}>
-      {translate(currentPage)}
-      </Typography>
+
+
       <Typography variant="body1" marginBottom={2} fontWeight={100} style={typoStyle}>
         Atualizado em {lastUpdate ? formatBrazilianDate(lastUpdate) : ""}
       </Typography>
-      <Box display="flex" flexDirection="column" alignItems="center">
-        {data.map((item, index) => (
-          <Item key={index}>
-            {item}
-          </Item>
-        ))}
-      </Box>
+
+      {renderContent("Doações", doacoes)}
+      {renderContent("Voluntários", voluntarios)}
+      {renderContent("Não aceitamos", naoAceitamos)}
+
+
     </Box>
   );
 };
