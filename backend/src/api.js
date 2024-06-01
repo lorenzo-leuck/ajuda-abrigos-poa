@@ -17,6 +17,45 @@ router.get('/abrigos', async (req, res) => {
   }
 });
 
+router.get('/abrigosInfo', async (req, res) => {
+  const { abrigo } = req.query;
+  try {
+    const abrigos = await Abrigos.findOne({abrigo}, { '_id': 0, 'abrigo': 1, 'info': 1 }).lean();
+    const info = abrigos?.info
+    res.status(200).json({ message: info });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+router.patch('/abrigosInfo', async (req, res) => {
+  const { abrigo } = req.query;
+  const { info } = req.body;
+
+  try {
+    const updatedAbrigo = await Abrigos.findOneAndUpdate(
+      { abrigo },
+      { $set: { info } },
+      { new: true, projection: { 'info': 1 } }
+    ).lean();
+
+    if (!updatedAbrigo) {
+      return res.status(404).json({ message: 'Abrigo not found' });
+    }
+
+    res.status(200).json({ message: updatedAbrigo.info });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+
+
 router.get('/abrigo/:nomeAbrigo', async (req, res) => {
   try {
     const { nomeAbrigo } = req.params;

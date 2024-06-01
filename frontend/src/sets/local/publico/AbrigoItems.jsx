@@ -23,6 +23,13 @@ const AbrigoItems = ({ nomeAbrigo }) => {
   const [naoAceitamos, setNaoAceitamos] = useState([]);
   const [info, setInfo] = useState("");
     const [lastUpdate, setLastUpdate] = useState(null);
+    const [abrigosInfo, setAbrigosInfo] = useState("");
+
+
+    const getAbrigosInfo = async () => {
+      const data = await axios.get(`${baseUrl}/api/abrigosInfo?abrigo=${nomeAbrigo}`);
+      setAbrigosInfo(data.data.message);
+    };
 
   const formatBrazilianDate = (dateString) => {
     const date = new Date(dateString);
@@ -64,6 +71,7 @@ const AbrigoItems = ({ nomeAbrigo }) => {
   };
 
   useEffect(() => {
+    getAbrigosInfo();
     fetchData();
     fetchDate();
   }, []);
@@ -110,6 +118,17 @@ const AbrigoItems = ({ nomeAbrigo }) => {
       {renderContent("Voluntários", voluntarios)}
       {renderContent("Não aceitamos", naoAceitamos)}
 
+      {abrigosInfo && (
+  <>
+    <Typography variant="h4" p={3} fontWeight={200} style={typoStyle}>
+      Info
+    </Typography>
+
+    <Typography variant="h6" fontWeight={50} p={1}>
+      {abrigosInfo}
+    </Typography>
+  </>
+)}
 
     </Box>
   );
