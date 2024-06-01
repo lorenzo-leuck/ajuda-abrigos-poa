@@ -60,10 +60,10 @@ const EditarItems = ({ itemType, abrigo }) => {
 
   const handleChange = (e) => {
     const value = e.target.value;
-
-    const regex = /^[^\s][a-zA-Z0-9\s]*$/;
-
-    if (value === '' || regex.test(value)) {
+  
+    const regex = /^[^\s].*|^$/;
+  
+    if (regex.test(value)) {
       setNewValue(value);
     }
   };
